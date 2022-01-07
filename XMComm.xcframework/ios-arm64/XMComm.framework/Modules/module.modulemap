@@ -1,0 +1,11 @@
+framework module XMComm {
+  umbrella header "XMComm.h"
+
+  export *
+  module * { export * }
+}
+
+module XMComm.Swift {
+    header "XMComm-Swift.h"
+    requires objc
+}

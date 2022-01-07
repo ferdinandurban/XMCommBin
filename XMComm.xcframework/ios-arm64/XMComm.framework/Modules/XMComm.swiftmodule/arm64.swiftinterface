@@ -1,0 +1,2317 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.5.2 (swiftlang-1300.0.47.5 clang-1300.0.29.30)
+// swift-module-flags: -target arm64-apple-ios13.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name XMComm
+import Alamofire
+import CocoaLumberjack
+import CoreBluetooth
+import CoreLocation
+import CryptoSwift
+import DeviceKit
+import Dispatch
+import Foundation
+import MapKit
+import RxBluetoothKit2
+import RxCocoa
+import RxSwift
+import Security
+import Swift
+import SwiftyJSON
+import SystemConfiguration
+import UIKit
+import UserNotifications
+@_exported import XMComm
+import _Concurrency
+public enum BtConnectionState {
+  case notAvailable, notConnected, btConnected, authorized, disconnecting, btConnecting
+  public var isConnected: Swift.Bool {
+    get
+  }
+  public var performingConnectionOrIsConnected: Swift.Bool {
+    get
+  }
+  public static func == (a: XMComm.BtConnectionState, b: XMComm.BtConnectionState) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+extension RxSwift.ObservableType {
+  public func xmDebug(_ anIdentifier: Swift.String? = nil, trimOutput aTrimOutput: Swift.Bool = false, file aFile: Swift.StaticString = #file, line aLine: Swift.Int = #line, function aFunction: Swift.StaticString = #function) -> RxSwift.Observable<Self.Element>
+}
+extension Swift.Array {
+  public func splitBy(_ aSize: Swift.Int) -> [[Element]]
+}
+extension Swift.Array where Element : Swift.Comparable {
+  public func index(_ anElements: [Element]) -> Swift.Array<Element>.Index?
+}
+extension Foundation.Timer {
+  public class func schedule(delay: Foundation.TimeInterval, handler: @escaping (CoreFoundation.CFRunLoopTimer?) -> Swift.Void) -> Foundation.Timer?
+  public class func schedule(repeatInterval interval: Foundation.TimeInterval, handler: @escaping (CoreFoundation.CFRunLoopTimer?) -> Swift.Void) -> Foundation.Timer?
+}
+extension RxSwift.Reactive where Base == XMComm.ErrorMessageCenter {
+  public func messages(forVc aVcName: Swift.String?) -> RxSwift.Observable<XMComm.ErrorMessage>
+}
+extension Swift.UInt8 : XMComm.XMCommActionValueType {
+  public func unsignedIntValue() -> Swift.UInt8
+}
+extension Swift.Int : XMComm.XMCommActionValueType {
+  public func unsignedIntValue() -> Swift.UInt8
+}
+extension Swift.UInt64 {
+  public static func from(bytes aBytes: [Swift.UInt8]) -> Swift.UInt64
+  public func unsignedBoxValue(size aSize: Swift.Int, source aSource: XMComm.ValueSource, date aBoxDate: Foundation.Date) -> XMComm.BoxValue<Any>
+  public func unknownValue(forSize aSize: Swift.Int) -> Swift.UInt64
+  public func isUnknown(forSize aSize: Swift.Int) -> Swift.Bool
+}
+extension Swift.Int64 {
+  public static func from(bytes aBytes: [Swift.UInt8]) -> Swift.Int64
+  public func signedIntValue(forSize aSize: Swift.Int, source aSource: XMComm.ValueSource, date aDate: Foundation.Date) -> XMComm.BoxValue<Any>
+  public func unknownValue(forSize aSize: Swift.Int) -> Swift.Int64
+  public func isUnknown(forSize aSize: Swift.Int) -> Swift.Bool
+}
+extension Swift.String {
+  public func dataFromHex() -> Foundation.Data?
+}
+public struct MonthHelpers {
+  public var month: Swift.Int
+  public var year: Swift.Int
+  public init(month aMonth: Swift.Int, year aYear: Swift.Int)
+  public func toDates() -> (start: Foundation.Date, end: Foundation.Date)
+}
+extension Swift.Bool : XMComm.XMCommActionValueType {
+  public func unsignedIntValue() -> XMComm.UartByte
+}
+public class XMActionResultItem {
+  public var code: Swift.Int?
+  public var message: Swift.String?
+  public var id: Swift.Int?
+  public var idText: Swift.String?
+  public var fields: Swift.AnyObject?
+  public init?(json: SwiftyJSON.JSON)
+  @objc deinit
+}
+public enum CarMode : Swift.UInt64 {
+  case unknown, standard, maintenance, immobilized, emergency, autoLock
+  public init?(rawValue: Swift.UInt64)
+  public typealias RawValue = Swift.UInt64
+  public var rawValue: Swift.UInt64 {
+    get
+  }
+}
+open class XMCarDetail {
+  open var id: Swift.Int?
+  open var properties: [XMComm.XMCarPropertyItem]
+  open var requestTakeOver: Swift.Bool
+  open var lastUpdated: Foundation.Date?
+  public init(id anId: Swift.Int?, properties aProperties: [XMComm.XMCarPropertyItem], lastUpdated aLastUpdated: Foundation.Date?, requestTakeOver aTakeOver: Swift.Bool)
+  @objc deinit
+}
+extension Swift.UnsignedInteger {
+  public var byteArray: [Swift.UInt8] {
+    get
+  }
+  public init?(_ aBytes: [Swift.UInt8])
+}
+public struct XMInfo : Swift.Decodable {
+  public var name: Swift.String?
+  public var version: Swift.String?
+  public init(from decoder: Swift.Decoder) throws
+}
+public class XMAuthResponse {
+  public var code: Swift.Int?
+  public var message: Swift.String?
+  public var id: Swift.Int?
+  public var idText: Swift.String?
+  public init?(json: SwiftyJSON.JSON)
+  @objc deinit
+}
+public struct XMError {
+}
+public protocol XMUserHintType {
+  var status: Swift.Int? { get set }
+  var idUser: Swift.String? { get set }
+  var userMail: Swift.String? { get set }
+  var userFirstSecondName: Swift.String? { get set }
+}
+public enum XMLoginError : Swift.Error {
+  case invalidAuthenticationInfo
+  case invalidPUK
+  case pukNotAvailable
+  case invalidPIN
+  case invalidPINOverLimit
+  case invalidPINBlock
+  case invalidPINLength
+  case pinNotAvailable
+  case tokenNotAvailable
+  case urlNotFound
+  case systemError
+  case blockedMobileDevice
+  case invalidDevice
+  case stolenDevice
+  case unknownResponseCode
+  public static func == (a: XMComm.XMLoginError, b: XMComm.XMLoginError) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+extension XMComm.XMLoginError : Swift.CustomStringConvertible, Swift.CustomDebugStringConvertible {
+  public var description: Swift.String {
+    get
+  }
+  public var debugDescription: Swift.String {
+    get
+  }
+}
+public enum XMSerializationError : Swift.Error {
+  case notValid
+  case notDictionary
+  public static func == (a: XMComm.XMSerializationError, b: XMComm.XMSerializationError) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public enum XMRestError : Swift.Error {
+  case parsingError
+  case serializationError
+  case badRequest
+  case unauthorized
+  case forbidden
+  case secureByAppForbidden
+  case missingDeviceId
+  case missingInstallationId
+  case notConnected
+  case serverNotResponding
+  case newVersionRequired
+  case notAllowedOnDemoAccount
+  case noContent
+  case carNotAuthorized
+  case deviceNotAuthorized
+  case stolenPhone
+  case noConnectionToXmarton
+  case unknownPushId
+  public static func error(forHTTPStatusCode code: Swift.Int?, responseBody aBody: Any? = nil) -> XMComm.XMRestError
+  public func outputError() -> Swift.Error
+  public func shouldInterruptSubscribe() -> Swift.Bool
+  public static func == (a: XMComm.XMRestError, b: XMComm.XMRestError) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+extension XMComm.XMRestError : Swift.CustomDebugStringConvertible {
+  public var debugDescription: Swift.String {
+    get
+  }
+}
+extension XMComm.XMRestService {
+  public func getFuelList(_ carId: Swift.Int, dateFrom: Foundation.Date, dateTo: Foundation.Date) -> RxSwift.Observable<XMComm.FuelListVO>
+  public func getFuelDetail(_ fuelId: Swift.Int) -> RxSwift.Observable<XMComm.FuelDetailItemVO>
+  public func putFuelDetail(fuelId aFuelId: Swift.Int, fuelDetail aFuelDetail: XMComm.FuelDetailItemVO) -> RxSwift.Observable<Swift.Void>
+}
+extension Alamofire.DataRequest {
+  public enum LogOption {
+    case mute
+    case debug
+    case dump
+    public static func == (a: Alamofire.DataRequest.LogOption, b: Alamofire.DataRequest.LogOption) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  public func log(option anOption: Alamofire.DataRequest.LogOption) -> Self
+  public func logRequest(option anOption: Alamofire.DataRequest.LogOption) -> Self
+  public func logResponse(option anOption: Alamofire.DataRequest.LogOption) -> Self
+}
+extension XMComm.XMRestService {
+  public func perform(onCar aCarId: Swift.Int?, action anActionId: XMComm.CarCommandId, value aValue: XMComm.XMCommActionValueType?, timeout aTimeout: Foundation.TimeInterval) -> RxSwift.Observable<XMComm.BoxValue<Swift.Int>>
+}
+extension XMComm.XMRestService {
+  public func getDriveList(_ carId: Swift.Int, dateFrom: Foundation.Date, dateTo: Foundation.Date, includeActual anIncludeActual: Swift.Bool = false) -> RxSwift.Observable<XMComm.DriveListVO>
+  public func getDriveDetail(_ driveId: Swift.Int) -> RxSwift.Observable<XMComm.DriveDetailVO>
+}
+extension XMComm.XMRestService {
+  public func loginWithUsername(withUsername anUsername: Swift.String, andPassword aPassword: Swift.String) -> RxSwift.Observable<XMComm.XMLoginResponse>
+  public func loginWithToken(_ aToken: Swift.String) -> RxSwift.Observable<XMComm.XMLoginResponse>
+  public func postLogout() -> RxSwift.Observable<XMComm.RestResponse>
+  public func putAuthNotification(notificationToken aToken: Swift.String) -> RxSwift.Observable<XMComm.RestResponse>
+  public func deleteAuthNotification() -> RxSwift.Observable<XMComm.RestResponse>
+  public func authorizeDevice() -> RxSwift.Observable<XMComm.RestResponse>
+}
+extension XMComm.XMRestService {
+  public func getCars() -> RxSwift.Observable<[XMComm.CarWithBoxType]>
+  public func getCarDetail(id aCarId: Swift.Int, requestedProperties aRequestedProperties: [XMComm.CarInfoValueId]) -> RxSwift.Observable<XMComm.XMCarDetail>
+  public func getCarCapabilities(_ aCarId: Swift.Int) -> RxSwift.Observable<XMComm.XMCarCapabilityItem>
+  public func getCarLocation(forCarId aCarId: Swift.Int) -> RxSwift.Observable<XMComm.DrivePointVO>
+}
+public struct NotForDemoUserError : Swift.Error {
+  public var localizedDescription: Swift.String {
+    get
+  }
+}
+extension XMComm.XMRestService {
+  public func postCommand(id aCarId: Swift.Int, action anActionId: XMComm.CommGeneralDefinitionType, value aValue: XMComm.XMCommActionValueType?) throws -> RxSwift.Observable<XMComm.XMGeneralResponse?>
+}
+public struct AnalyticsLogger {
+  public typealias RequestLog = (Foundation.URLRequest, Foundation.TimeInterval) -> Swift.Void
+  public static var logHandler: XMComm.AnalyticsLogger.RequestLog?
+}
+@_hasMissingDesignatedInitializers public class XMRestService : RxSwift.ReactiveCompatible {
+  public static let sharedInstance: XMComm.XMRestService
+  public var accessToken: Swift.String?
+  public var refreshToken: Swift.String?
+  public var deviceId: Swift.String?
+  public typealias ReactiveBase = XMComm.XMRestService
+  @objc deinit
+}
+extension Swift.String : XMComm.CommValueType {
+  public init?(serverValue aServerValue: Swift.String)
+  public init?(boxValue aBoxValue: [XMComm.UartByte], precision aPrecision: Swift.Int?, rawValueType aType: XMComm.BoxRawValueType)
+}
+public class DriverVO : XMComm.DriverType {
+  public var idUser: Swift.String
+  public var firstName: Swift.String
+  public var lastName: Swift.String
+  public var externalHash: Swift.String
+  public var name: Swift.String
+  required public init()
+  public init(json aJson: SwiftyJSON.JSON)
+  @objc deinit
+}
+public typealias UartByte = Swift.UInt8
+public struct MessageProcessingResult : Swift.OptionSet {
+  public static let notProcessedYet: XMComm.MessageProcessingResult
+  public static let missingEnvelope: XMComm.MessageProcessingResult
+  public static let missingAESKey: XMComm.MessageProcessingResult
+  public static let failedToCreateAES: XMComm.MessageProcessingResult
+  public static let nothingToDecrypt: XMComm.MessageProcessingResult
+  public static let decryptionSuccessful: XMComm.MessageProcessingResult
+  public static let wrongMessageSize: XMComm.MessageProcessingResult
+  public static let failedToDecrypt: XMComm.MessageProcessingResult
+  public static let invalidCrc: XMComm.MessageProcessingResult
+  public static let wrongContentLength: XMComm.MessageProcessingResult
+  public static let missingMessageNumber: XMComm.MessageProcessingResult
+  public static let invalidMessageNumber: XMComm.MessageProcessingResult
+  public var rawValue: Swift.UInt
+  public init(rawValue aRawValue: Swift.UInt)
+  public typealias ArrayLiteralElement = XMComm.MessageProcessingResult
+  public typealias Element = XMComm.MessageProcessingResult
+  public typealias RawValue = Swift.UInt
+}
+public protocol UartMessageType {
+  var rawData: [XMComm.UartByte]? { get }
+  var rawContentData: [XMComm.UartByte]? { get }
+  var contentData: [XMComm.UartByte]? { get }
+  var isEncrypted: Swift.Bool { get set }
+  var processingResult: XMComm.MessageProcessingResult { get }
+  var rawDataDebug: Swift.String { get }
+}
+public enum ValueRequestType {
+  case get, subscribe, unsubscribe
+  public static func == (a: XMComm.ValueRequestType, b: XMComm.ValueRequestType) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public struct ValueRequest {
+}
+public struct CarCommandRequest {
+}
+public protocol UartMessageOutgoingType : XMComm.UartMessageType {
+  var carCommand: XMComm.CarCommandRequest? { get }
+  var valueRequests: [XMComm.ValueRequest]? { get }
+  var packets: [[XMComm.UartByte]] { get }
+  init(command aCommand: XMComm.CarCommandRequest)
+  init(valueRequests aRequests: [XMComm.ValueRequest])
+  init(handshakeData aHandshakeData: [XMComm.UartByte])
+  init(authorizationWithMobileDeviceGuid aMobileDeviceGuid: [XMComm.UartByte])
+  init(authorizationWithMobileDeviceGuid aMobileDeviceGuid: [XMComm.UartByte], temporaryKeys aTemporaryKeys: [[XMComm.UartByte]])
+}
+public struct UartValue {
+  public static let subscribeFlag: XMComm.UartByte
+  public static let paddingByte: XMComm.UartByte
+  public let id: XMComm.UartByte
+  public let bytes: [XMComm.UartByte]
+  public var isAcknowledgeValue: Swift.Bool {
+    get
+  }
+}
+open class XMBoxInfoItem : XMComm.CarBoxInfoType {
+  open var publicID: Swift.String
+  open var publicKey: Swift.String
+  open var authorizationState: XMComm.CarBoxStatus
+  open var installationDate: Foundation.Date?
+  open var btBoxUUID: Swift.String?
+  open var temporaryKeys: [Foundation.Data]
+  public init?(json aJSON: SwiftyJSON.JSON)
+  public init(boxInfo aBoxInfo: XMComm.CarBoxInfoType)
+  public init()
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers open class DrivePointVO : XMComm.DrivePointType {
+  open var idCar: Swift.Int?
+  open var speed: CoreLocation.CLLocationSpeed?
+  open var timestamp: Foundation.TimeInterval?
+  open var coordinate: CoreLocation.CLLocationCoordinate2D
+  open var addressLines: XMComm.AddressLinesType? {
+    get
+    set
+  }
+  open var uriParameters: Alamofire.Parameters {
+    get
+  }
+  required public init()
+  required public init?(serverValue aServerValue: Swift.String)
+  required public init?(boxValue aBoxValue: [XMComm.UartByte], precision aPrecision: Swift.Int?, rawValueType aType: XMComm.BoxRawValueType)
+  convenience required public init?(cacheRepresentation aCacheRepresentation: Swift.String?)
+  @objc deinit
+}
+extension XMComm.DrivePointVO : XMComm.Cacheable {
+  public var cacheRepresentation: Swift.String? {
+    get
+  }
+}
+extension XMComm.DrivePointVO : XMComm.CommValueType {
+}
+public class XMCarPropertyItem {
+  public typealias Value = Swift.String
+  open var key: Swift.String
+  open var value: XMComm.XMCarPropertyItem.Value
+  open var changedOn: Foundation.Date
+  open var lastUpdated: Foundation.Date?
+  open var boolValue: XMComm.BoxValue<Any> {
+    get
+  }
+  public init(key aKey: Swift.String, value aValue: XMComm.XMCarPropertyItem.Value, changedOn aChangedOn: Foundation.Date, lastUpdated aLastUpdated: Foundation.Date?)
+  public func unsignedIntValue(size aSize: Swift.Int) -> XMComm.BoxValue<Any>
+  public func signedIntValue() -> XMComm.BoxValue<Any>
+  @objc deinit
+}
+public enum CarBoxStatus : Swift.Int, Swift.Decodable {
+  case unknown, notAuthorized, awaitingAuthorization, authorized
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+extension XMComm.CarBoxStatus : Swift.CustomDebugStringConvertible {
+  public var debugDescription: Swift.String {
+    get
+  }
+}
+public struct XMCarCapabilityItem : XMComm.CarCapabilityType {
+  public var identifier: Swift.Int
+  public var boxProperties: [XMComm.BoxPropertyType]
+  public init?(json aJson: SwiftyJSON.JSON)
+}
+public struct XMBoxProperty : XMComm.BoxPropertyType {
+  public var key: Swift.String
+  public var accessibleViaGsm: Swift.Bool
+  public var canBeChangedViaGsm: Swift.Bool
+  public var accessibleViaBt: Swift.Bool
+  public var canBeChangedViaBt: Swift.Bool
+  public init?(json aJson: SwiftyJSON.JSON)
+  public init(property aProperty: XMComm.BoxPropertyType)
+}
+extension Swift.Int {
+  public func format(_ aFormat: Swift.String) -> Swift.String
+}
+extension Swift.Double {
+  public func format(_ aFormat: Swift.String) -> Swift.String
+}
+extension Swift.Double {
+  public var timeComponents: Foundation.DateComponents {
+    get
+  }
+  public func formatString(includeSeconds aSeconds: Swift.Bool = false, lessThanMinuteText aSmallTime: Swift.String? = nil) -> Swift.String
+}
+extension Swift.Double {
+  public func format() -> Swift.String
+  public func formatWithUnits() -> (Swift.String, Swift.String)
+}
+open class XMCarItemDetail {
+  open var carId: Swift.Int?
+  open var fullModelName: Swift.String?
+  open var registrationNumber: Swift.String?
+  open var nick: Swift.String?
+  open var gsmOnline: Swift.Bool?
+  open var btOnline: Swift.Bool?
+  open var location: XMComm.DrivePointVO?
+  open var properties: XMComm.XMCarPropertyItem?
+  open var tankCapacity: Swift.Int?
+  open var pricePerKm: Swift.Double?
+  open var boxInfo: XMComm.CarBoxInfoType?
+  open var autoConnect: Swift.Bool
+  open var currencyCode: Swift.String
+  open var favourite: Swift.Bool?
+  open var requestTakeover: Swift.Bool
+  open var capabilities: [XMComm.BoxPropertyType] {
+    get
+  }
+  public init?(json: SwiftyJSON.JSON)
+  public init(car aCar: XMComm.CarType)
+  public init()
+  open func toParameters() -> Alamofire.Parameters
+  @objc deinit
+}
+extension XMComm.XMCarItemDetail : XMComm.CarWithBoxType {
+  public var isFavourite: Swift.Bool {
+    get
+    set(aNewValue)
+  }
+  public var communicationState: XMComm.CarCommunicationState {
+    get
+    set(aNewValue)
+  }
+  public var nickName: Swift.String? {
+    get
+    set
+  }
+  public var id: Swift.Int {
+    get
+  }
+  public var isRequestTakeover: Swift.Bool {
+    get
+  }
+}
+open class XMCarStatusParameterItem {
+  open var carParameterName: Swift.String?
+  open var carParameterBooleanStatus: Swift.Bool?
+  open var carParameterValue: Swift.Double?
+  open var carParameterUpdateTime: Foundation.Date?
+  public init?(json: SwiftyJSON.JSON)
+  @objc deinit
+}
+public enum OSType : Swift.String {
+  case iOS
+  case Android
+  case WP
+  case Unknown
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public struct DeviceInformation {
+  public var device: DeviceKit.Device
+  public var maker: Swift.String
+  public var platform: XMComm.OSType
+  public var appVersion: Swift.String
+  public var model: Swift.String
+  public var operatingSystemVersion: Swift.String
+  public var requestParameters: Alamofire.Parameters {
+    get
+  }
+  public init()
+  public init(installId anInstallId: Swift.String, device aDevice: DeviceKit.Device? = nil, model aModel: Swift.String? = nil, operatingSystemVersion aSystemVersion: Swift.String? = nil)
+}
+@_inheritsConvenienceInitializers open class DriveDetailVO : XMComm.DriveVO, XMComm.DriveDetailType {
+  open var distanceCost: Swift.Double
+  open var averageSpeed: Swift.Double
+  open var maxSpeed: Swift.Double
+  open var points: [XMComm.DrivePointType]
+  open var startPoint: XMComm.DrivePointType?
+  open var routeType: Swift.Int
+  open var startLatitude: Swift.Double
+  open var startLongitude: Swift.Double
+  open var driver: Swift.String
+  open var routeTypeName: Swift.String
+  open var canEdit: Swift.Bool
+  open var userName: Swift.String
+  required public init()
+  override public init?(json aJson: SwiftyJSON.JSON)
+  @objc deinit
+}
+open class DriveVO : XMComm.DriveType {
+  open var carId: Swift.Int
+  open var id: Swift.Int?
+  open var startDate: Foundation.Date
+  open var endDate: Foundation.Date
+  open var distance: Swift.Double
+  open var startPlace: Swift.String
+  open var endPlace: Swift.String
+  open var ongoing: Swift.Bool
+  open var driverId: Swift.String?
+  open var duration: Foundation.TimeInterval?
+  open var privateLevel: XMComm.PrivateLevel
+  open var purpose: Swift.String?
+  open var startAddress: XMComm.AddressLinesType? {
+    get
+    set
+  }
+  open var endAddress: XMComm.AddressLinesType? {
+    get
+    set
+  }
+  required public init()
+  public init?(json aJson: SwiftyJSON.JSON)
+  @objc deinit
+}
+public struct DriveListVO {
+  public var totalDistance: Swift.Double?
+  public var drives: [XMComm.DriveVO]
+  public var carId: Swift.Int?
+  public init(json aJson: SwiftyJSON.JSON)
+  public init(json aJson: SwiftyJSON.JSON, carId aCarId: Swift.Int)
+}
+public struct FuelListVO {
+  public var fuels: [XMComm.FuelType]
+  public init(json aJson: SwiftyJSON.JSON)
+}
+public struct FuelDetailItemVO : XMComm.FuelDetailType {
+  public var carId: Swift.Int
+  public var id: Swift.Int
+  public var date: Foundation.Date
+  public var type: Swift.String?
+  public var volume: Swift.Double
+  public var address: Swift.String?
+  public var totalPrice: Swift.Double
+  public var fullTank: Swift.Bool
+  public var verified: Swift.Bool
+  public var location: CoreLocation.CLLocationCoordinate2D?
+  public var unitPrice: Swift.Double?
+  public var currencyCode: Swift.String
+  public var uriParameters: Alamofire.Parameters {
+    get
+  }
+  public var addressDetail: XMComm.AddressLinesType? {
+    get
+    set
+  }
+  public init()
+  public init?(json aJson: SwiftyJSON.JSON)
+}
+public struct FuelItemVO : XMComm.FuelType {
+  public var carId: Swift.Int
+  public var id: Swift.Int
+  public var date: Foundation.Date
+  public var type: Swift.String?
+  public var volume: Swift.Double
+  public var address: Swift.String?
+  public var totalPrice: Swift.Double?
+  public var addressDetail: XMComm.AddressLinesType? {
+    get
+    set
+  }
+  public init?(json aJson: SwiftyJSON.JSON)
+  public init?(json aJson: SwiftyJSON.JSON, carId aCarId: Swift.Int)
+  public init()
+}
+public struct FuelStorageVO {
+  public var id: Swift.Int
+  public var capacity: Swift.Double?
+  public var type: XMComm.FuelStorageTypeVO
+  public var dictionary: [Swift.String : Any] {
+    get
+  }
+}
+@_hasMissingDesignatedInitializers open class RoadTypeRelatedValuesVO {
+  open var general: Swift.Double?
+  open var town: Swift.Double?
+  open var outOfTown: Swift.Double?
+  open var dictionary: [Swift.String : Any] {
+    get
+  }
+  @objc deinit
+}
+public struct FuelInfoVO {
+  public var idCar: Swift.Int?
+  public var storage: XMComm.FuelStorageVO
+  public var costs: XMComm.FuelCostsVO
+  public var consumption: XMComm.FuelConsumptionVO
+  public var currentLevel: Swift.Double?
+  public var fuelName: Swift.String?
+  public var fuelCode: Swift.String?
+  public var dictionary: [Swift.String : Any] {
+    get
+  }
+}
+public struct FuelStorageTypeVO {
+  public var name: Swift.String
+  public var unit: Swift.String
+  public var dictionary: [Swift.String : Any] {
+    get
+  }
+}
+open class XMCarTempKeyResponse {
+  open var idCar: Swift.Int?
+  open var temporaryKey: Swift.String?
+  public init?(json: SwiftyJSON.JSON)
+  @objc deinit
+}
+public enum PrivateLevel : Swift.UInt {
+  case showEverything, hideDestinationAndTimes, hideDestinations
+  public init?(rawValue: Swift.UInt)
+  public typealias RawValue = Swift.UInt
+  public var rawValue: Swift.UInt {
+    get
+  }
+}
+public struct CarCommunicationState : Swift.OptionSet {
+  public let rawValue: Swift.Int
+  public init(rawValue aRawValue: Swift.Int)
+  public static let notAvailable: XMComm.CarCommunicationState
+  public static let gsmAvailable: XMComm.CarCommunicationState
+  public static let bluetoothAvailable: XMComm.CarCommunicationState
+  public static let allConnectionAvailable: XMComm.CarCommunicationState
+  public var isAvailable: Swift.Bool {
+    get
+  }
+  public typealias ArrayLiteralElement = XMComm.CarCommunicationState
+  public typealias Element = XMComm.CarCommunicationState
+  public typealias RawValue = Swift.Int
+}
+extension XMComm.CarCommunicationState : Swift.CustomDebugStringConvertible {
+  public var debugDescription: Swift.String {
+    get
+  }
+}
+public protocol CarType {
+  var id: Swift.Int { get }
+  var registrationNumber: Swift.String? { get }
+  var communicationState: XMComm.CarCommunicationState { get set }
+  var fullModelName: Swift.String? { get }
+  var nickName: Swift.String? { get set }
+  var capabilities: [XMComm.BoxPropertyType] { get }
+  var currencyCode: Swift.String { get }
+  var isFavourite: Swift.Bool { get set }
+  var requestTakeover: Swift.Bool { get set }
+}
+extension XMComm.CarType {
+  public var displayTitle: Swift.String? {
+    get
+  }
+}
+public protocol CarBoxInfoType : Swift.CustomDebugStringConvertible {
+  var publicID: Swift.String { get set }
+  var publicKey: Swift.String { get set }
+  var authorizationState: XMComm.CarBoxStatus { get set }
+  var btBoxUUID: Swift.String? { get set }
+  var temporaryKeys: [Foundation.Data] { get set }
+}
+extension XMComm.CarBoxInfoType {
+  public var debugDescription: Swift.String {
+    get
+  }
+  public mutating func update(with anCarBoxInfoType: XMComm.CarBoxInfoType)
+}
+public protocol CarWithBoxType : Swift.CustomDebugStringConvertible, XMComm.CarType {
+  var boxInfo: XMComm.CarBoxInfoType? { get set }
+  var autoConnect: Swift.Bool { get set }
+}
+extension XMComm.CarWithBoxType {
+  public var debugDescription: Swift.String {
+    get
+  }
+}
+extension Swift.String {
+  public func objcRange(from aRange: Swift.Range<Swift.String.Index>) -> Foundation.NSRange
+  public func range(from aObjcRange: Foundation.NSRange) -> Swift.Range<Swift.String.Index>?
+}
+open class XMCarSubscribeResponse {
+  open var expiration: Swift.Int?
+  public init?(json: SwiftyJSON.JSON)
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class RestResponse {
+  public var code: XMComm.RestResponseCode
+  public var message: Swift.String?
+  public var id: Swift.Int?
+  public var idText: Swift.String?
+  public var data: [Swift.String : Any]?
+  @objc deinit
+}
+open class XMNotifRegistrationResponse {
+  open var notificationID: Swift.String
+  public init?(json: SwiftyJSON.JSON)
+  @objc deinit
+}
+public struct XMLoginResponse {
+  public var accessToken: Swift.String
+  public var accessTokenExpire: Foundation.Date
+  public var refreshToken: Swift.String
+  public var refreshTokenExpire: Foundation.Date
+  public var userGuid: Swift.String?
+  public var code: XMComm.RestResponseCode
+  public var message: Swift.String?
+}
+extension Foundation.URLError {
+  public var rest: XMComm.XMRestError {
+    get
+  }
+}
+public enum BatteryStateDetail : Swift.UInt64 {
+  case charged0
+  case charged5
+  case charged10
+  case charged15
+  case charged20
+  case charged25
+  case charged30
+  case charged35
+  case charged40
+  case charged45
+  case charged50
+  case charged55
+  case charged60
+  case charged65
+  case charged70
+  case charged75
+  case charged80
+  case charged85
+  case charged90
+  case charged95
+  case charged100
+  public var category: XMComm.BatteryStateCategory {
+    get
+  }
+  public var simplifiedCategory: XMComm.BatteryStateCategorySimplified {
+    get
+  }
+  public init?(rawValue: Swift.UInt64)
+  public typealias RawValue = Swift.UInt64
+  public var rawValue: Swift.UInt64 {
+    get
+  }
+}
+public enum BatteryStateCategory : Swift.UInt64 {
+  case unknown, full, threeQuarter, twothrees, half, discharged, requireService, damaged
+  public init?(rawValue: Swift.UInt64)
+  public typealias RawValue = Swift.UInt64
+  public var rawValue: Swift.UInt64 {
+    get
+  }
+}
+public enum BatteryStateCategorySimplified : Swift.UInt64 {
+  case unknown, error, warning, normal
+  public init?(rawValue: Swift.UInt64)
+  public typealias RawValue = Swift.UInt64
+  public var rawValue: Swift.UInt64 {
+    get
+  }
+}
+public enum CarCommandId : Swift.Int {
+  case openWindows
+  case turnOnLights
+  case unlockCar
+  case turnOnWarningLights
+  case authorizeByDeviceName
+  case driverIdentification
+  case switchCarMode
+  case openRearLeft
+  case openRearRight
+  case secureByApp
+  case notificationCarStart
+  case notificationUnidentifiedDriver
+  case notificationUnauthorizedOpen
+  case notificationUnauthorizedEnter
+  case notificationTowing
+  case automaticStart
+  case carManualStart
+  case engineStart
+  case phoneBatteryLevel
+  case allowAutoLockOnDisconnect
+  case sirene
+  case trunkDoors
+  case horn
+  case turnOnHeating
+  public static let allValue: [XMComm.CarCommandId]
+  public var definition: XMComm.CommCommandDefinitionType {
+    get
+  }
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+extension XMComm.CarCommandId : Swift.CustomStringConvertible {
+  public var description: Swift.String {
+    get
+  }
+}
+public enum CarInfoValueId : Swift.Int {
+  case indoorTemperature
+  case outdoorTemperature
+  case primaryTankLevel
+  case warningLights
+  case headLights
+  case windowsState
+  case lockState
+  case batteryLevel
+  case batteryDetail
+  case batteryStatus
+  case currentDriveDistance
+  case currentSpeed
+  case doorsState
+  case rideState
+  case odometer
+  case driveDuration
+  case carMode
+  case secureByApp
+  case notificationCarStart
+  case notificationUnidentifiedDriver
+  case notificationUnauthorizedOpen
+  case notificationUnauthorizedEnter
+  case notificationTowing
+  case currentBoxTimestamp
+  case carLocation
+  case automaticStart
+  case startAllowed
+  case autoLock
+  case engineSpeed
+  case sirene
+  case engineRunning
+  case driverName
+  case independentHeatingStatus
+  case featureRemoteStarted
+  case requestTakeover
+  public static let allValues: [XMComm.CarInfoValueId]
+  public static var allGsmValueIds: [XMComm.CarInfoValueId]
+  public static func carInfoValueId(apiKey anApiKey: Swift.String) -> [XMComm.CarInfoValueId]
+  public static func carInfoValueId(boxId aBoxId: XMComm.UartByte) -> [XMComm.CarInfoValueId]
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+extension XMComm.CarInfoValueId : Swift.CustomStringConvertible {
+  public var description: Swift.String {
+    get
+  }
+}
+@_hasMissingDesignatedInitializers public class XMGeneralResponse : Swift.Decodable {
+  public var code: Swift.Int?
+  public var message: Swift.String?
+  public var id: Swift.Int?
+  public var idText: Swift.String?
+  @objc deinit
+  required public init(from decoder: Swift.Decoder) throws
+}
+public enum BoxRawValueType {
+  case signed, unsigned
+  public static func == (a: XMComm.BoxRawValueType, b: XMComm.BoxRawValueType) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public enum ValueSupportedSource {
+  case none, gsmOnly, bluetoothOnly, gsmOrBluetooth
+  public static func == (a: XMComm.ValueSupportedSource, b: XMComm.ValueSupportedSource) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public protocol CommValueDefinitionType : XMComm.CommGeneralDefinitionType {
+  var id: XMComm.CarInfoValueId { get set }
+  var type: XMComm.CommValueType.Type { get set }
+  var precision: Swift.Int? { get set }
+  var rawValueType: XMComm.BoxRawValueType { get set }
+  var supportedSource: XMComm.ValueSupportedSource { get }
+  var isAvailableOnBluetooth: Swift.Bool { get }
+  var isAvailableOnGsm: Swift.Bool { get }
+  var isAvailableOnlyOnGsm: Swift.Bool { get }
+  func match(apiKey anApiKey: Swift.String) -> Swift.Bool
+  func match(boxId aBoxId: XMComm.UartByte) -> Swift.Bool
+}
+public struct CommValueDefinition : XMComm.CommValueDefinitionType {
+  public var id: XMComm.CarInfoValueId
+  public var type: XMComm.CommValueType.Type
+  public var precision: Swift.Int?
+  public var rawValueType: XMComm.BoxRawValueType
+  public var boxId: XMComm.UartByte?
+  public var apiName: Swift.String?
+  public var description: Swift.String
+  public var supportedSource: XMComm.ValueSupportedSource {
+    get
+  }
+  public var isAvailableOnBluetooth: Swift.Bool {
+    get
+  }
+  public var isAvailableOnGsm: Swift.Bool {
+    get
+  }
+  public var isAvailableOnlyOnGsm: Swift.Bool {
+    get
+  }
+  public var isAvailableOnlyOnBluetooth: Swift.Bool {
+    get
+  }
+  public func match(apiKey aKey: Swift.String) -> Swift.Bool
+  public func match(boxId anId: XMComm.UartByte) -> Swift.Bool
+}
+public enum CarInfoValueSource {
+  case bluetoothOnly, gsmOnly, bluetoothAndGsm, unknown
+  public static func == (a: XMComm.CarInfoValueSource, b: XMComm.CarInfoValueSource) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public protocol CommGeneralDefinitionType : Swift.CustomStringConvertible {
+  var boxId: XMComm.UartByte? { get set }
+  var apiName: Swift.String? { get set }
+}
+extension XMComm.CommGeneralDefinitionType {
+  public var source: XMComm.CarInfoValueSource {
+    get
+  }
+}
+extension XMComm.CommGeneralDefinitionType {
+  public func isEqual(to anAnother: XMComm.CommGeneralDefinitionType) -> Swift.Bool
+}
+public protocol BleDevice {
+  var uuid: Foundation.UUID? { get }
+}
+extension RxBluetoothKit2.Peripheral : XMComm.BleDevice {
+  public var uuid: Foundation.UUID? {
+    get
+  }
+}
+public protocol CommCommandDefinitionType : XMComm.CommGeneralDefinitionType {
+  var id: XMComm.CarCommandId { get set }
+}
+public struct CommCommandDefinition : XMComm.CommCommandDefinitionType {
+  public var id: XMComm.CarCommandId
+  public var boxId: Swift.UInt8?
+  public var apiName: Swift.String?
+  public var description: Swift.String
+}
+public enum DoorWindowState {
+  case opened, closed, unknown
+  public static func == (a: XMComm.DoorWindowState, b: XMComm.DoorWindowState) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+extension XMComm.DoorWindowState : Swift.CustomDebugStringConvertible {
+  public var debugDescription: Swift.String {
+    get
+  }
+}
+public struct Doors : Swift.OptionSet {
+  public static let none: XMComm.Doors
+  public static let leftFrontDoorKnown: XMComm.Doors
+  public static let leftFrontDoorState: XMComm.Doors
+  public static let rightFrontDoorKnown: XMComm.Doors
+  public static let rightFrontDoorState: XMComm.Doors
+  public static let leftRearDoorKnown: XMComm.Doors
+  public static let leftRearDoorState: XMComm.Doors
+  public static let rightRearDoorKnown: XMComm.Doors
+  public static let rightRearDoorState: XMComm.Doors
+  public static let trunkKnown: XMComm.Doors
+  public static let trunkState: XMComm.Doors
+  public static let engineKnown: XMComm.Doors
+  public static let engineState: XMComm.Doors
+  public static let fuelKnown: XMComm.Doors
+  public static let fuelState: XMComm.Doors
+  public static let roofKnown: XMComm.Doors
+  public static let roofState: XMComm.Doors
+  public let rawValue: Swift.UInt64
+  public var frontLeftState: XMComm.DoorWindowState {
+    get
+  }
+  public var frontRightState: XMComm.DoorWindowState {
+    get
+  }
+  public var rearLeftState: XMComm.DoorWindowState {
+    get
+  }
+  public var rearRightState: XMComm.DoorWindowState {
+    get
+  }
+  public var trunkState: XMComm.DoorWindowState {
+    get
+  }
+  public var engineState: XMComm.DoorWindowState {
+    get
+  }
+  public var fuelState: XMComm.DoorWindowState {
+    get
+  }
+  public var roofState: XMComm.DoorWindowState {
+    get
+  }
+  public var someUnknown: Swift.Bool {
+    get
+  }
+  public var anyDoorOpened: Swift.Bool {
+    get
+  }
+  public var onlyTrunkOpen: Swift.Bool {
+    get
+  }
+  public init(rawValue aValue: Swift.UInt64)
+  public typealias ArrayLiteralElement = XMComm.Doors
+  public typealias Element = XMComm.Doors
+  public typealias RawValue = Swift.UInt64
+}
+extension XMComm.Doors : Swift.CustomDebugStringConvertible {
+  public var debugDescription: Swift.String {
+    get
+  }
+}
+public struct Windows : Swift.OptionSet {
+  public static let none: XMComm.Windows
+  public static let leftFrontDoorKnown: XMComm.Windows
+  public static let leftFrontDoorState: XMComm.Windows
+  public static let rightFrontDoorKnown: XMComm.Windows
+  public static let rightFrontDoorState: XMComm.Windows
+  public static let leftRearDoorKnown: XMComm.Windows
+  public static let leftRearDoorState: XMComm.Windows
+  public static let rightRearDoorKnown: XMComm.Windows
+  public static let rightRearDoorState: XMComm.Windows
+  public let rawValue: Swift.UInt64
+  public var frontLeftState: XMComm.DoorWindowState {
+    get
+  }
+  public var frontRightState: XMComm.DoorWindowState {
+    get
+  }
+  public var rearLeftState: XMComm.DoorWindowState {
+    get
+  }
+  public var rearRightState: XMComm.DoorWindowState {
+    get
+  }
+  public var anyWindowOpen: Swift.Bool {
+    get
+  }
+  public init(rawValue aValue: Swift.UInt64)
+  public typealias ArrayLiteralElement = XMComm.Windows
+  public typealias Element = XMComm.Windows
+  public typealias RawValue = Swift.UInt64
+}
+extension XMComm.Windows : Swift.CustomDebugStringConvertible {
+  public var debugDescription: Swift.String {
+    get
+  }
+}
+public enum LightState {
+  case on, off, unknown
+  public static func == (a: XMComm.LightState, b: XMComm.LightState) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public struct Lights : Swift.OptionSet {
+  public static let none: XMComm.Lights
+  public static let outlineKnown: XMComm.Lights
+  public static let outlineState: XMComm.Lights
+  public static let standardKnown: XMComm.Lights
+  public static let standardState: XMComm.Lights
+  public static let hiBeamKnown: XMComm.Lights
+  public static let hiBeamState: XMComm.Lights
+  public let rawValue: Swift.UInt64
+  public var outlineState: XMComm.LightState {
+    get
+  }
+  public var standardState: XMComm.LightState {
+    get
+  }
+  public var hiBeamState: XMComm.LightState {
+    get
+  }
+  public var isAnyLightsOn: Swift.Bool {
+    get
+  }
+  public init(rawValue aRawValue: Swift.UInt64)
+  public typealias ArrayLiteralElement = XMComm.Lights
+  public typealias Element = XMComm.Lights
+  public typealias RawValue = Swift.UInt64
+}
+public protocol XMCommActionValueType {
+  func unsignedIntValue() -> Swift.UInt8
+}
+public enum TypeOfDrive : Swift.Int {
+  case unknown, privateDrive, businessDrive
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+extension XMComm.TypeOfDrive : Swift.CustomStringConvertible {
+  public var description: Swift.String {
+    get
+  }
+}
+public protocol DrivePointType {
+  var coordinate: CoreLocation.CLLocationCoordinate2D { get set }
+  var speed: CoreLocation.CLLocationSpeed? { get set }
+  var timestamp: Foundation.TimeInterval? { get set }
+  var addressLines: XMComm.AddressLinesType? { get set }
+  init()
+}
+extension XMComm.DrivePointType {
+  public var location: CoreLocation.CLLocation {
+    get
+    set(aNewLocation)
+  }
+}
+public protocol DriveType {
+  var carId: Swift.Int { get set }
+  var id: Swift.Int? { get set }
+  var startDate: Foundation.Date { get set }
+  var endDate: Foundation.Date { get set }
+  var distance: Swift.Double { get set }
+  var startPlace: Swift.String { get set }
+  var startAddress: XMComm.AddressLinesType? { get set }
+  var endPlace: Swift.String { get set }
+  var endAddress: XMComm.AddressLinesType? { get set }
+  var duration: Foundation.TimeInterval? { get set }
+  var ongoing: Swift.Bool { get set }
+  var driverId: Swift.String? { get set }
+  var privateLevel: XMComm.PrivateLevel { get set }
+  var purpose: Swift.String? { get set }
+  init()
+}
+extension XMComm.DriveType {
+  public var driveTimeString: Swift.String {
+    get
+  }
+  public init(drive aDrive: XMComm.DriveType)
+  public mutating func update(with aDrive: XMComm.DriveType, carId aCarId: Swift.Int)
+}
+public protocol DriveDetailType : XMComm.DriveType {
+  var distanceCost: Swift.Double { get set }
+  var points: [XMComm.DrivePointType] { get set }
+  var startPoint: XMComm.DrivePointType? { get set }
+  var averageSpeed: CoreLocation.CLLocationSpeed { get set }
+  var maxSpeed: CoreLocation.CLLocationSpeed { get set }
+  var driver: Swift.String { get set }
+  var userName: Swift.String { get set }
+  var routeType: Swift.Int { get set }
+  var routeTypeName: Swift.String { get set }
+  var canEdit: Swift.Bool { get set }
+}
+extension XMComm.DriveDetailType {
+  public var totalCosts: Swift.Double {
+    get
+  }
+  public init(driveDetail aDriveDetail: XMComm.DriveDetailType)
+  public mutating func update(driveDetail aDriveDetail: XMComm.DriveDetailType)
+}
+public protocol DriverType {
+  var idUser: Swift.String { get set }
+  var firstName: Swift.String { get set }
+  var lastName: Swift.String { get set }
+  var externalHash: Swift.String { get set }
+}
+public struct ErrorMessage {
+  public var title: Swift.String?
+  public var message: Swift.String
+  public var presentation: XMComm.ErrorMessagePresentation
+  public var targets: [Swift.String]?
+  public init(message aMessage: Swift.String, presentation aPresentation: XMComm.ErrorMessagePresentation = .toast, title aTitle: Swift.String? = nil, targets aTargets: [Swift.String]? = nil)
+  public func canDisplay(in aVc: Swift.String?, showGeneral aShowGeneral: Swift.Bool = true) -> Swift.Bool
+}
+public protocol XMCommAuthorizationServiceType {
+  var rawPinConfiguration: XMComm.PINConfiguration? { get set }
+  var notificationPermissionAsked: RxSwift.Observable<Swift.Bool>? { get set }
+  func loginWithUserName(_ aUserName: Swift.String, andPassword: Swift.String) -> RxSwift.Observable<XMComm.XMLoginResponse>
+  func loginWithToken() -> RxSwift.Observable<XMComm.XMLoginResponse>
+  func logout(forgetPuk aForgetPuk: Swift.Bool) -> RxSwift.Observable<Swift.Void>
+  func storeNewPIN(_ aNewPIN: Swift.String?, withConfiguration: XMComm.PINConfiguration?) -> RxSwift.Observable<Swift.Void>
+  func verifyPIN(_ aPIN: Swift.String, updateAuthorizationState aStateNeedUpdate: Swift.Bool) -> RxSwift.Observable<Swift.Void>
+  func newNotificationToken(_ aToken: Swift.String?)
+  func performLocalLogout(forgetPuk aForgetPuk: Swift.Bool, userId anUserId: Swift.String?)
+  mutating func removeTemporaryStoredCredentials()
+  mutating func removeSettingsNotificationsAndLocationBasedOnState()
+}
+extension XMComm.XMCommAuthorizationServiceType {
+  public var pinConfiguration: XMComm.PINConfiguration {
+    get
+  }
+  public func storeNewPIN(_ aNewPIN: Swift.String?) -> RxSwift.Observable<Swift.Void>
+  public func verifyPIN(_ aPIN: Swift.String) -> RxSwift.Observable<Swift.Void>
+  public func logout() -> RxSwift.Observable<Swift.Void>
+  public func performLocalLogout()
+  public mutating func performStartupAuthorizationCleanup()
+}
+public enum CarInfoErrorType : Swift.Error {
+  case notSupportedByCar, wrongDataType, activeCarNotAvailable, valueIdNotProvided
+  public static func == (a: XMComm.CarInfoErrorType, b: XMComm.CarInfoErrorType) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public protocol XMCommCarInfoType {
+  var defaultTimeout: Foundation.TimeInterval { get set }
+}
+extension XMComm.XMCommCarInfoType {
+  public func endCurrentRide()
+}
+public protocol FuelType {
+  var carId: Swift.Int { get set }
+  var id: Swift.Int { get set }
+  var date: Foundation.Date { get set }
+  var type: Swift.String? { get set }
+  var volume: Swift.Double { get set }
+  var address: Swift.String? { get set }
+  var addressDetail: XMComm.AddressLinesType? { get set }
+  init()
+}
+extension XMComm.FuelType {
+  public var dateString: Swift.String {
+    get
+  }
+  public init(fuelType aFuelType: XMComm.FuelType)
+  public mutating func update(fuel aFuelType: XMComm.FuelType, carId aCarId: Swift.Int)
+}
+public protocol FuelDetailType : XMComm.FuelType {
+  var totalPrice: Swift.Double { get set }
+  var unitPrice: Swift.Double? { get set }
+  var fullTank: Swift.Bool { get set }
+  var verified: Swift.Bool { get set }
+  var location: CoreLocation.CLLocationCoordinate2D? { get set }
+  var currencyCode: Swift.String { get set }
+}
+extension XMComm.FuelDetailType {
+  public init(fuelDetailType aFuelDetail: XMComm.FuelDetailType)
+  public mutating func update(fuelDetailType aFuelDetail: XMComm.FuelDetailType)
+}
+@_hasMissingDesignatedInitializers open class XMCommService : XMComm.XMCommCarInfoType {
+  public static let instance: XMComm.XMCommService
+  public var performingConnectionOrIsConnected: Swift.Bool {
+    get
+  }
+  public var isConnected: Swift.Bool {
+    get
+  }
+  open var notificationPermissionAsked: RxSwift.Observable<Swift.Bool>?
+  open var defaultTimeout: Foundation.TimeInterval
+  @objc deinit
+  public func printApiVersion()
+  @available(iOS 13.0, *)
+  public func bluetoothPermissionStatus() -> RxBluetoothKit2.BluetoothState
+  public func startBTService()
+  public func stopBTService()
+  public func restartBTService()
+  public func connectToCar(_ aCar: XMComm.CarWithBoxType?)
+  public var bluetoothService: XMComm.BluetoothService? {
+    get
+  }
+}
+public protocol XMFuelInfoType {
+  func fuelList(forCar aCar: XMComm.CarType?, from aStartDate: Foundation.Date, to anEndDate: Foundation.Date) -> RxSwift.Observable<[XMComm.FuelType]>
+  func lastFuel(forCar aCar: XMComm.CarType?) -> RxSwift.Observable<XMComm.FuelDetailType?>
+  func detail(fuelId aFuelId: Swift.Int) -> RxSwift.Observable<XMComm.FuelDetailType>
+  func update(fuelId aFuelId: Swift.Int, detail: XMComm.FuelDetailType) -> RxSwift.Observable<Swift.Void>
+  func cachedValues(forCar aCar: XMComm.CarType?, from aStartDate: Foundation.Date, to anEndDate: Foundation.Date) -> [XMComm.FuelType]
+}
+extension XMComm.XMFuelInfoType {
+  public func fuelList(from aStartDate: Foundation.Date, to anEndDate: Foundation.Date) -> RxSwift.Observable<[XMComm.FuelType]>
+  public func fuelList(forCar aCar: XMComm.CarType? = nil, year anYear: Swift.Int, month aMonth: Swift.Int) -> RxSwift.Observable<[XMComm.FuelType]>
+  public func cachedValues(forCar aCar: XMComm.CarType? = nil, year anYear: Swift.Int, month aMonth: Swift.Int) -> [XMComm.FuelType]
+}
+public protocol XMFuelInfoTypeWithCreate : XMComm.XMFuelInfoType {
+  func create(detail aDetail: XMComm.FuelDetailType, for aCar: XMComm.CarType) -> RxSwift.Observable<Swift.Void>
+}
+public protocol XMLogBookType {
+  func driveList(forCar aCar: XMComm.CarType?, from aStartDate: Foundation.Date, to anEndDate: Foundation.Date) -> RxSwift.Observable<[XMComm.DriveType]>
+  func detail(driveId aDriveId: Swift.Int) -> RxSwift.Observable<XMComm.DriveDetailType>
+  func cachedValues(forCar aCar: XMComm.CarType?, from aStartDate: Foundation.Date, to anEndDate: Foundation.Date) -> [XMComm.DriveType]
+  func carProfile(forCar aCar: XMComm.CarType) -> RxSwift.Observable<XMComm.XMCarProfile>
+  func driveDrivers(driveId aDriveId: Swift.Int) -> RxSwift.Observable<[XMComm.DriverVO]>
+}
+extension XMComm.XMLogBookType {
+  public func driveList(forCar aCar: XMComm.CarType? = nil, year anYear: Swift.Int, month aMonth: Swift.Int) -> RxSwift.Observable<[XMComm.DriveType]>
+  public func cachedValues(forCar aCar: XMComm.CarType? = nil, year anYear: Swift.Int, month aMonth: Swift.Int) -> [XMComm.DriveType]
+}
+@_hasMissingDesignatedInitializers public class BluetoothService : RxSwift.ReactiveCompatible {
+  public static let sharedInstance: XMComm.BluetoothService
+  public var mobileDeviceGuid: Swift.String? {
+    get
+    set
+  }
+  public var carToConnect: XMComm.CarWithBoxType? {
+    get
+    set(aNewCarToConnect)
+  }
+  public func connect(publicId aPublicId: Swift.String, publicKey aPublicKey: Swift.String, temporaryKeys aTempKeys: [Foundation.Data] = [])
+  public func disconnect()
+  public var lastDateFromBox: Foundation.Date
+  public var authorizedCars: [XMComm.CarWithBoxType]
+  @available(iOS 13.0, *)
+  public var bluetoothPermissionState: RxBluetoothKit2.BluetoothState {
+    get
+    set
+  }
+  public var internalConnectionState: XMComm.XmRxVariable<XMComm.BtConnectionState> {
+    get
+  }
+  public var autoConnectUUID: Swift.String? {
+    get
+  }
+  @objc deinit
+  public func centralManagerDidUpdateState(_ central: CoreBluetooth.CBCentralManager)
+  public func startMonitoring()
+  public typealias ReactiveBase = XMComm.BluetoothService
+}
+extension RxSwift.Reactive where Base : UIKit.UIApplication {
+  public var isActive: RxSwift.Observable<Swift.Bool> {
+    get
+  }
+  public var applicationState: RxSwift.Observable<UIKit.UIApplication.State> {
+    get
+  }
+}
+public class XmRxVariable<T> {
+  public var value: T {
+    get
+    set(aNewValue)
+  }
+  public init(_ aValue: T)
+  @objc deinit
+  public func asObservable() -> RxSwift.Observable<T>
+}
+public enum XMBluetoothError : Swift.Error {
+  case missingBoxInfo
+  case deviceNotAuthorized
+  case unsupportedType
+  case acknowledgeNotReceived
+  public static func == (a: XMComm.XMBluetoothError, b: XMComm.XMBluetoothError) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public enum ErrorMessagePresentation {
+  case toast, dialog
+  public static func == (a: XMComm.ErrorMessagePresentation, b: XMComm.ErrorMessagePresentation) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+extension RxSwift.Reactive where Base : XMComm.BluetoothService {
+  public func nearBoxes(for aDevicePublicIds: [Swift.String]? = nil) -> RxSwift.Observable<[RxBluetoothKit2.Peripheral]>
+}
+extension RxBluetoothKit2.Peripheral : Swift.Hashable {
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+open class XMCarProfile {
+  open var carId: Swift.Int?
+  open var authorizedUsers: [Swift.String]?
+  public init?(json: SwiftyJSON.JSON)
+  @objc deinit
+}
+extension RxSwift.ObservableType {
+  public func retryOnEveryError(maximalInterval aMaxInterval: RxSwift.RxTimeInterval = .seconds(15), scheduler aScheduler: RxSwift.SchedulerType? = nil) -> RxSwift.Observable<Self.Element>
+}
+extension XMComm.BluetoothService {
+  public var isBluetoothActive: Swift.Bool {
+    get
+  }
+  public var performingConnectionOrIsConnected: Swift.Bool {
+    get
+  }
+  public var isConnected: Swift.Bool {
+    get
+  }
+}
+extension Swift.RangeReplaceableCollection where Self.Element == Swift.UInt8 {
+  public init?(hexString aHexString: Swift.String)
+}
+public protocol ReservationType {
+  var idReservation: Swift.Int? { get set }
+  var idCar: Swift.Int? { get set }
+  var carRegistrationNumber: Swift.String? { get set }
+  var carName: Swift.String? { get set }
+  var timeFrom: Foundation.Date? { get set }
+  var timeTo: Foundation.Date? { get set }
+  var state: Swift.Int? { get set }
+  var idCompany: Swift.Int? { get set }
+  var driverName: Swift.String? { get set }
+}
+extension RxSwift.Reactive where Base : XMComm.BluetoothService {
+  public var isBluetoothAvailable: RxSwift.Observable<Swift.Bool> {
+    get
+  }
+  public var isAuthorized: RxSwift.Observable<Swift.Bool> {
+    get
+  }
+  public var connectionState: RxSwift.Observable<XMComm.BtConnectionState> {
+    get
+  }
+}
+extension RxSwift.Reactive where Base : XMComm.BluetoothService {
+  public func value(ids anIds: [XMComm.CarInfoValueId] = []) -> RxSwift.Observable<(id: XMComm.CarInfoValueId, value: XMComm.BoxValue<Any>)>
+  public func subscribe(ids anIds: [XMComm.CarInfoValueId] = []) -> RxSwift.Observable<(id: XMComm.CarInfoValueId, value: XMComm.BoxValue<Any>)>
+}
+extension RxSwift.Observable {
+  public func printDebugLog(textPrefix: Swift.String = "") -> RxSwift.Observable<Element>
+}
+extension RxSwift.Reactive where Base : XMComm.BluetoothService {
+  public func perform(command aCommand: XMComm.CarCommandId, value aValue: XMComm.XMCommActionValueType = UInt8(1)) -> RxSwift.Observable<Swift.Void>
+}
+@_hasMissingDesignatedInitializers public class WarningLights : RxSwift.ReactiveCompatible {
+  public static var state: Swift.Bool {
+    get
+  }
+  public static func turnOnWarningLights(numberOfCycles aTimes: Swift.Int = 30, cycleDuration aDuration: RxSwift.RxTimeInterval = .milliseconds(500), startDelay aDelay: RxSwift.RxTimeInterval = .seconds(0))
+  public static func turnOffWarningLights()
+  public typealias ReactiveBase = XMComm.WarningLights
+  @objc deinit
+}
+extension RxSwift.Reactive where Base : XMComm.WarningLights {
+  public static var state: RxSwift.Observable<Swift.Bool> {
+    get
+  }
+}
+extension XMComm.BluetoothService {
+  public func disconnectFromCar(stopReconnecting: Swift.Bool = false)
+  public func resetAll()
+  public var connectionState: XMComm.BtConnectionState {
+    get
+  }
+}
+public enum PukRequestError : Swift.Error {
+  case invalidUser, missingPhone, demoPUK
+  public static func == (a: XMComm.PukRequestError, b: XMComm.PukRequestError) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public enum SecurityLockPreferences : Swift.Int {
+  case lockAndSecure, onlyLock, ask
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+extension XMComm.SecurityLockPreferences : Swift.Equatable {
+  public static func == (lhs: XMComm.SecurityLockPreferences, rhs: XMComm.SecurityLockPreferences) -> Swift.Bool
+}
+public enum LockOperation : Swift.UInt8 {
+  case lock, unlock, softLock
+  public init?(rawValue: Swift.UInt8)
+  public typealias RawValue = Swift.UInt8
+  public var rawValue: Swift.UInt8 {
+    get
+  }
+}
+extension XMComm.LockOperation : XMComm.XMCommActionValueType {
+  public func unsignedIntValue() -> Swift.UInt8
+}
+public protocol XMCarsReservationType {
+  var idCompany: Swift.Int? { get set }
+  var destinationRequired: Swift.Int? { get set }
+  var purposeRequired: Swift.Int? { get set }
+  var authorizerRequired: Swift.Int? { get set }
+  var travelerRequired: Swift.Int? { get set }
+  var noteRequired: Swift.Int? { get set }
+  var name: Swift.String? { get set }
+  var parkingPlace: [XMComm.XMParkingPlaceForReservationType]? { get set }
+  var driverName: Swift.String? { get set }
+}
+public protocol XMParkingPlaceForReservationType {
+  var idPlace: Swift.Int? { get set }
+  var name: Swift.String? { get set }
+  var cars: [XMComm.XMCarForReservationType] { get set }
+}
+public protocol XMCarForReservationType {
+  var idCar: Swift.Int? { get set }
+  var carRegistrationNumber: Swift.String? { get set }
+  var carName: Swift.String? { get set }
+  var carRequested: Swift.Bool? { get set }
+}
+public protocol XMDriverTravelerType {
+  var isDriver: Swift.Bool? { get set }
+  var idUser: Swift.String? { get set }
+  var userName: Swift.String? { get set }
+  var userFirstName: Swift.String? { get set }
+  var userLogin: Swift.String? { get set }
+  var userAvatar: Swift.String? { get set }
+}
+public protocol XMReservationF2Type {
+  var idCompany: Swift.Int? { get set }
+  var state: Swift.Int? { get set }
+  var idUserDriver: Swift.String? { get set }
+  var idUserAprover: Swift.String? { get set }
+  var idCar: Swift.Int? { get set }
+  var timeFrom: Foundation.Date? { get set }
+  var timeTo: Foundation.Date? { get set }
+  var idUserTraveler: [Swift.String]? { get set }
+  var destination: Swift.String? { get set }
+  var purpose: Swift.String? { get set }
+  var note: Swift.String? { get set }
+  func toJSON() -> [Swift.String : Any]
+}
+public protocol XMReservationDetailType {
+  var idReservation: Swift.Int? { get set }
+  var idCar: Swift.Int? { get set }
+  var carDefinitionName: Swift.String? { get set }
+  var carRegistrationNumber: Swift.String? { get set }
+  var timeFrom: Foundation.Date? { get set }
+  var timeTo: Foundation.Date? { get set }
+  var state: Swift.Int? { get set }
+  var idUserAprover: Swift.String? { get set }
+  var userLoginAprover: Swift.String? { get set }
+  var firstNameAprover: Swift.String? { get set }
+  var personalNumberAprover: Swift.String? { get set }
+  var idUserOriginator: Swift.String? { get set }
+  var userLoginOriginator: Swift.String? { get set }
+  var firstNameOriginator: Swift.String? { get set }
+  var personalNumberOriginator: Swift.String? { get set }
+  var idUserDriver: Swift.String? { get set }
+  var userLoginDriver: Swift.String? { get set }
+  var firstNameDriver: Swift.String? { get set }
+  var personalNumberDriver: Swift.String? { get set }
+  var idUserStateChange: Swift.String? { get set }
+  var userLoginStateChange: Swift.String? { get set }
+  var firstNameStateChange: Swift.String? { get set }
+  var personalNumberStateChange: Swift.String? { get set }
+  var stateChangeTime: Foundation.Date? { get set }
+  var idUserChanged: Swift.String? { get set }
+  var userLoginChanged: Swift.String? { get set }
+  var firstNameChanged: Swift.String? { get set }
+  var personalNumberChanged: Swift.String? { get set }
+  var lastChangeTime: Foundation.Date? { get set }
+  var userTraveler: [XMComm.XMDriverTravelerType]? { get set }
+  var canAprove: Swift.Bool? { get set }
+  var destination: Swift.String? { get set }
+  var purpose: Swift.String? { get set }
+  var note: Swift.String? { get set }
+  var parkingPlaceName: Swift.String? { get set }
+  var parkingPlace: Swift.Int? { get set }
+  var canEdit: Swift.Bool? { get }
+  var validFrom: Swift.String? { get set }
+}
+public protocol XMUserProfileType {
+  var status: Swift.String? { get set }
+  var userId: Swift.String? { get set }
+  var requirePuk: Swift.Bool? { get set }
+  var fullName: Swift.String? { get set }
+  var hasReservation: Swift.Bool? { get set }
+}
+extension XMComm.LockStateInfo : XMComm.CommValueType {
+  public var cacheRepresentation: Swift.String? {
+    get
+  }
+  public init?(cacheRepresentation aCacheRepresentation: Swift.String?)
+  public init?(serverValue aServerValue: Swift.String)
+  public init?(boxValue aBoxValue: [XMComm.UartByte], precision aPrecision: Swift.Int?, rawValueType aType: XMComm.BoxRawValueType)
+}
+public enum LockStateInfo : Swift.UInt64, Swift.Equatable, RxSwift.ReactiveCompatible {
+  case unknown, unlocked, locked
+  public init?(rawValue: Swift.UInt64)
+  public typealias RawValue = Swift.UInt64
+  public typealias ReactiveBase = XMComm.LockStateInfo
+  public var rawValue: Swift.UInt64 {
+    get
+  }
+}
+extension XMComm.LockStateInfo : Swift.CustomStringConvertible {
+  public var description: Swift.String {
+    get
+  }
+}
+public struct XMUrlEncoding : Alamofire.ParameterEncoding {
+  public enum Destination {
+    case methodDependent, queryString, httpBody
+    public static func == (a: XMComm.XMUrlEncoding.Destination, b: XMComm.XMUrlEncoding.Destination) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  public static var `default`: XMComm.XMUrlEncoding {
+    get
+  }
+  public static var methodDependent: XMComm.XMUrlEncoding {
+    get
+  }
+  public static var queryString: XMComm.XMUrlEncoding {
+    get
+  }
+  public static var httpBody: XMComm.XMUrlEncoding {
+    get
+  }
+  public let destination: XMComm.XMUrlEncoding.Destination
+  public init(destination: XMComm.XMUrlEncoding.Destination = .methodDependent)
+  public func encode(_ urlRequest: Alamofire.URLRequestConvertible, with parameters: Alamofire.Parameters?) throws -> Foundation.URLRequest
+  public func queryComponents(fromKey key: Swift.String, value: Any) -> [(Swift.String, Swift.String)]
+  public func escape(_ string: Swift.String) -> Swift.String
+}
+public protocol Cacheable {
+  var cacheRepresentation: Swift.String? { get }
+  init?(cacheRepresentation aCacheRepresentation: Swift.String?)
+}
+extension Swift.Int : XMComm.Cacheable {
+  public var cacheRepresentation: Swift.String? {
+    get
+  }
+  public init?(cacheRepresentation aCacheRepresentation: Swift.String?)
+}
+extension Swift.Int64 : XMComm.Cacheable {
+  public var cacheRepresentation: Swift.String? {
+    get
+  }
+  public init?(cacheRepresentation aCacheRepresentation: Swift.String?)
+}
+extension Swift.UInt64 : XMComm.Cacheable {
+  public var cacheRepresentation: Swift.String? {
+    get
+  }
+  public init?(cacheRepresentation aCacheRepresentation: Swift.String?)
+}
+extension Swift.String : XMComm.Cacheable {
+  public var cacheRepresentation: Swift.String? {
+    get
+  }
+  public init?(cacheRepresentation aCacheRepresentation: Swift.String?)
+}
+extension CoreLocation.CLLocationCoordinate2D : XMComm.Cacheable {
+  public var cacheRepresentation: Swift.String? {
+    get
+  }
+  public init?(cacheRepresentation aCacheRepresentation: Swift.String?)
+}
+extension UIKit.UIApplication.State : Swift.CustomDebugStringConvertible {
+  public var debugDescription: Swift.String {
+    get
+  }
+}
+extension UIKit.UIApplication.State : Swift.CustomStringConvertible {
+  public var description: Swift.String {
+    get
+  }
+}
+public enum CarCharacteristicId : Swift.Int {
+  case primaryFuelTankCapacity
+  case primaryFuelTankFuelType
+  case primaryFuelTankUnits
+  case primaryFuelTankConsumption
+  case primaryFuelTankCostPerKm
+  public static let allCharacteristics: [XMComm.CarCharacteristicId]
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum ReachabilityError : Swift.Error {
+  case failedToCreateWithAddress(Darwin.sockaddr, Swift.Int32)
+  case failedToCreateWithHostname(Swift.String, Swift.Int32)
+  case unableToSetCallback(Swift.Int32)
+  case unableToSetDispatchQueue(Swift.Int32)
+  case unableToGetFlags(Swift.Int32)
+}
+@available(*, unavailable, renamed: "Notification.Name.reachabilityChanged")
+public let ReachabilityChangedNotification: Foundation.NSNotification.Name
+extension Foundation.NSNotification.Name {
+  public static let reachabilityChanged: Foundation.Notification.Name
+}
+public class Reachability {
+  public typealias NetworkReachable = (XMComm.Reachability) -> ()
+  public typealias NetworkUnreachable = (XMComm.Reachability) -> ()
+  @available(*, unavailable, renamed: "Connection")
+  public enum NetworkStatus : Swift.CustomStringConvertible {
+    case notReachable, reachableViaWiFi, reachableViaWWAN
+    public var description: Swift.String {
+      get
+    }
+    public static func == (a: XMComm.Reachability.NetworkStatus, b: XMComm.Reachability.NetworkStatus) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  public enum Connection : Swift.CustomStringConvertible {
+    @available(*, deprecated, renamed: "unavailable")
+    case none
+    case unavailable, wifi, cellular
+    public var description: Swift.String {
+      get
+    }
+    public static func == (a: XMComm.Reachability.Connection, b: XMComm.Reachability.Connection) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  public var whenReachable: XMComm.Reachability.NetworkReachable?
+  public var whenUnreachable: XMComm.Reachability.NetworkUnreachable?
+  @available(*, deprecated, renamed: "allowsCellularConnection")
+  final public let reachableOnWWAN: Swift.Bool
+  public var allowsCellularConnection: Swift.Bool
+  public var notificationCenter: Foundation.NotificationCenter
+  @available(*, deprecated, renamed: "connection.description")
+  public var currentReachabilityString: Swift.String {
+    get
+  }
+  @available(*, unavailable, renamed: "connection")
+  public var currentReachabilityStatus: XMComm.Reachability.Connection {
+    get
+  }
+  public var connection: XMComm.Reachability.Connection {
+    get
+  }
+  required public init(reachabilityRef: SystemConfiguration.SCNetworkReachability, queueQoS: Dispatch.DispatchQoS = .default, targetQueue: Dispatch.DispatchQueue? = nil, notificationQueue: Dispatch.DispatchQueue? = .main)
+  convenience public init(hostname: Swift.String, queueQoS: Dispatch.DispatchQoS = .default, targetQueue: Dispatch.DispatchQueue? = nil, notificationQueue: Dispatch.DispatchQueue? = .main) throws
+  convenience public init(queueQoS: Dispatch.DispatchQoS = .default, targetQueue: Dispatch.DispatchQueue? = nil, notificationQueue: Dispatch.DispatchQueue? = .main) throws
+  @objc deinit
+}
+extension XMComm.Reachability {
+  public func startNotifier() throws
+  public func stopNotifier()
+  @available(*, deprecated, message: "Please use `connection != .none`")
+  public var isReachable: Swift.Bool {
+    get
+  }
+  @available(*, deprecated, message: "Please use `connection == .cellular`")
+  public var isReachableViaWWAN: Swift.Bool {
+    get
+  }
+  @available(*, deprecated, message: "Please use `connection == .wifi`")
+  public var isReachableViaWiFi: Swift.Bool {
+    get
+  }
+  public var description: Swift.String {
+    get
+  }
+}
+public struct CarCharacteristicValue<T> where T : XMComm.Cacheable {
+  public var id: XMComm.CarCharacteristicId
+  public var value: T
+  public var date: Foundation.Date
+}
+public protocol AddressLinesType {
+  var street: Swift.String { get set }
+  var town: Swift.String { get set }
+  var townWithZip: Swift.String { get set }
+  init()
+}
+extension XMComm.AddressLinesType {
+  public var addressWithoutZip: Swift.String {
+    get
+  }
+  public var fullAddress: Swift.String {
+    get
+  }
+  public mutating func update(with anAddressLines: XMComm.AddressLinesType)
+}
+@_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers open class FuelConsumptionVO : XMComm.RoadTypeRelatedValuesVO {
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers open class FuelCostsVO : XMComm.RoadTypeRelatedValuesVO {
+  @objc deinit
+}
+public enum RestResponseCode : Swift.Int {
+  case unknown
+  case ok
+  case alreadyDone
+  case missingPuk
+  case forbidden
+  case carNotAuthorized
+  case missingPuk2
+  case blockedDevice
+  case invalidDevice
+  case invalidUser
+  case deviceNotAuthorized
+  case missingPhone
+  case stolenPhone
+  case missingPuk4
+  case missingPuk5
+  case invalidDevice2
+  case invalidDevice3
+  case unknownPushId
+  case notForDemo
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public func NetworkObservable<T>(for aRequestComposer: @escaping () -> Alamofire.DataRequest, errorWhenNoDataProvided aNoDataError: Swift.Bool = true, resultConverter aConverter: @escaping (Alamofire.DataResponse<Any>) throws -> T) -> RxSwift.Observable<T>
+public func RestAuthorizationHeaders(_ anAccessToken: Swift.String?) -> Alamofire.HTTPHeaders?
+public struct PINConfiguration : Swift.OptionSet {
+  public var rawValue: Swift.Int
+  public init(rawValue aRawValue: Swift.Int)
+  public static let none: XMComm.PINConfiguration
+  public static let onStart: XMComm.PINConfiguration
+  public static let onUnlock: XMComm.PINConfiguration
+  public static let onSensitiveOperation: XMComm.PINConfiguration
+  public static let allowBiometricsVerification: XMComm.PINConfiguration
+  public static let allowManualCarStart: XMComm.PINConfiguration
+  public typealias ArrayLiteralElement = XMComm.PINConfiguration
+  public typealias Element = XMComm.PINConfiguration
+  public typealias RawValue = Swift.Int
+}
+extension XMComm.PINConfiguration : Swift.CustomDebugStringConvertible {
+  public var debugDescription: Swift.String {
+    get
+  }
+}
+public struct VerificationCodeInfo {
+  public var deviceInfo: XMComm.DeviceInformation
+  public var code: Swift.String?
+  public var requestParameters: Alamofire.Parameters {
+    get
+  }
+  public init()
+  public init(device aDevice: XMComm.DeviceInformation, code aCode: Swift.String?)
+  public init(installId anInstallId: Swift.String, code aCode: Swift.String?)
+}
+public enum ValueState {
+  case undetermined, unknown, unsupported, notConnected, available
+  public static func == (a: XMComm.ValueState, b: XMComm.ValueState) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public enum ValueSource : Swift.Int {
+  case bluetooth, gsm, none
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public protocol BoxValueType {
+  associatedtype ValueType
+  var value: Self.ValueType? { get }
+  var state: XMComm.ValueState { get }
+  var source: XMComm.ValueSource { get }
+  var boxDate: Foundation.Date? { get }
+}
+extension XMComm.BoxValueType {
+  public var intValue: Swift.Int? {
+    get
+  }
+  public var doubleValue: Swift.Double? {
+    get
+  }
+  public var boolValue: Swift.Bool? {
+    get
+  }
+  public var stringValue: Swift.String? {
+    get
+  }
+  public func notConnectedStatus(original anOriginalValue: Swift.Bool) -> Swift.Bool
+}
+public struct BoxValue<T> : XMComm.BoxValueType {
+  public typealias ValueType = T
+  public var value: XMComm.BoxValue<T>.ValueType?
+  public let state: XMComm.ValueState
+  public let source: XMComm.ValueSource
+  public let boxDate: Foundation.Date?
+  public init(value aValue: XMComm.BoxValue<T>.ValueType?, state aState: XMComm.ValueState, source aSource: XMComm.ValueSource, date aDate: Foundation.Date?)
+}
+extension RxSwift.Observable where Element : XMComm.BoxValueType {
+  public func downcastTo<R>(_ aType: R.Type) -> RxSwift.Observable<R?>
+  public var double: RxSwift.Observable<Swift.Double> {
+    get
+  }
+  public var int: RxSwift.Observable<Swift.Int> {
+    get
+  }
+  public var bool: RxSwift.Observable<Swift.Bool> {
+    get
+  }
+  public var string: RxSwift.Observable<Swift.String> {
+    get
+  }
+}
+public class XMCarSubscriptionItem {
+  public var location: XMComm.DrivePointVO?
+  public var properties: [XMComm.XMCarPropertyItem]?
+  public var validTo: Swift.Int?
+  public var carId: Swift.Int?
+  public var dateTime: Swift.Int?
+  public var requestTakeOver: Swift.Bool?
+  required public init()
+  public init?(json aJson: SwiftyJSON.JSON)
+  public init?(fromNotification aNotification: [Swift.AnyHashable : Any])
+  public func processResponse(fromJson aJson: SwiftyJSON.JSON)
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class CommCarService : RxSwift.ReactiveCompatible {
+  public static var instance: XMComm.CommCarService
+  public var rxCar: RxSwift.BehaviorSubject<XMComm.CarWithBoxType?> {
+    get
+    set
+  }
+  public var currentCar: XMComm.CarWithBoxType?
+  public func disconnectCurrentCar()
+  public typealias ReactiveBase = XMComm.CommCarService
+  @objc deinit
+}
+extension Swift.Optional where Wrapped == Swift.String {
+  public var nonEmptyString: Swift.String? {
+    get
+  }
+}
+extension XMComm.BluetoothService {
+  public func scanActiveCarProximity(disposedBy aBag: RxSwift.DisposeBag? = nil)
+}
+extension Swift.Collection where Self.Element == Swift.UInt8 {
+  public var hexString: Swift.String {
+    get
+  }
+  public func toHexString(formatted anIsUsingFormatting: Swift.Bool) -> Swift.String
+}
+public protocol CarCapabilityType {
+  var identifier: Swift.Int { get set }
+  var boxProperties: [XMComm.BoxPropertyType] { get set }
+}
+public protocol BoxPropertyType {
+  var key: Swift.String { get set }
+  var accessibleViaGsm: Swift.Bool { get set }
+  var canBeChangedViaGsm: Swift.Bool { get set }
+  var accessibleViaBt: Swift.Bool { get set }
+  var canBeChangedViaBt: Swift.Bool { get set }
+}
+extension XMComm.BoxPropertyType {
+  public mutating func update(with aProperty: XMComm.BoxPropertyType)
+}
+extension XMComm.CarInfoValueId {
+  public var definition: XMComm.CommValueDefinitionType {
+    get
+  }
+}
+public enum RidePermission : Swift.UInt64 {
+  case notAllowed, allowed, allowedEmergencyMode
+  public init?(rawValue: Swift.UInt64)
+  public typealias RawValue = Swift.UInt64
+  public var rawValue: Swift.UInt64 {
+    get
+  }
+}
+public protocol CommValueType : XMComm.Cacheable {
+  init?(serverValue aServerValue: Swift.String)
+  init?(boxValue aBoxValue: [XMComm.UartByte], precision aPrecision: Swift.Int?, rawValueType aType: XMComm.BoxRawValueType)
+}
+extension Swift.Double : XMComm.CommValueType {
+  public var cacheRepresentation: Swift.String? {
+    get
+  }
+  public init?(cacheRepresentation aCacheRepresentation: Swift.String?)
+  public init?(serverValue aServerValue: Swift.String)
+  public init?(boxValue aBoxValue: [XMComm.UartByte], precision aPrecision: Swift.Int?, rawValueType aType: XMComm.BoxRawValueType)
+}
+extension Swift.Bool : XMComm.CommValueType {
+  public var cacheRepresentation: Swift.String? {
+    get
+  }
+  public init?(cacheRepresentation aCacheRepresentation: Swift.String?)
+  public init?(serverValue aServerValue: Swift.String)
+  public init?(boxValue aBoxValue: [XMComm.UartByte], precision aPrecision: Swift.Int?, rawValueType aType: XMComm.BoxRawValueType)
+  public init?(intValue anInt: Swift.UInt64)
+}
+extension Swift.UInt : XMComm.CommValueType {
+  public var cacheRepresentation: Swift.String? {
+    get
+  }
+  public init?(cacheRepresentation aCacheRepresentation: Swift.String?)
+  public init?(serverValue aServerValue: Swift.String)
+  public init?(boxValue aBoxValue: [XMComm.UartByte], precision aPrecision: Swift.Int?, rawValueType aType: XMComm.BoxRawValueType)
+}
+extension XMComm.BatteryStateCategory : XMComm.CommValueType {
+  public var cacheRepresentation: Swift.String? {
+    get
+  }
+  public init?(cacheRepresentation aCacheRepresentation: Swift.String?)
+  public init?(serverValue aServerValue: Swift.String)
+  public init?(boxValue aBoxValue: [XMComm.UartByte], precision aPrecision: Swift.Int?, rawValueType aType: XMComm.BoxRawValueType)
+}
+public func XMLog(_ aMessage: Swift.String, functionName: Swift.StaticString = #function, fileName: Swift.StaticString = #file, lineNumber: Swift.Int = #line)
+public func XMLogError(_ aMessage: Swift.String, functionName: Swift.StaticString = #function, fileName: Swift.StaticString = #file, lineNumber: Swift.Int = #line)
+public enum XMLogLevel : Swift.UInt {
+  case verbose, debug, info, warning, error, severe, none
+  public init?(rawValue: Swift.UInt)
+  public typealias RawValue = Swift.UInt
+  public var rawValue: Swift.UInt {
+    get
+  }
+}
+public struct XMLogger {
+  public var enableConsoleLog: Swift.Bool {
+    get
+    set
+  }
+  public var logLevel: XMComm.XMLogLevel {
+    get
+    set
+  }
+  public var fileDestination: Swift.String? {
+    get
+    set
+  }
+  public var queue: Dispatch.DispatchQueue
+  public var logUrls: [Foundation.URL]? {
+    get
+  }
+  public static var defaultLogger: XMComm.XMLogger
+  public init()
+  public func verbose(_ aMessage: Swift.String?, functionName aFunctionName: Swift.StaticString = #function, fileName aFileName: Swift.StaticString = #file, lineNumber aLineNumber: Swift.Int = #line)
+  public func debug(_ aMessage: Swift.String?, functionName aFunctionName: Swift.StaticString = #function, fileName aFileName: Swift.StaticString = #file, lineNumber aLineNumber: Swift.Int = #line)
+  public func info(_ aMessage: Swift.String?, functionName aFunctionName: Swift.StaticString = #function, fileName aFileName: Swift.StaticString = #file, lineNumber aLineNumber: Swift.Int = #line)
+  public func warning(_ aMessage: Swift.String?, functionName aFunctionName: Swift.StaticString = #function, fileName aFileName: Swift.StaticString = #file, lineNumber aLineNumber: Swift.Int = #line)
+  public func error(_ aMessage: Swift.String?, functionName aFunctionName: Swift.StaticString = #function, fileName aFileName: Swift.StaticString = #file, lineNumber aLineNumber: Swift.Int = #line)
+  public func severe(_ aMessage: Swift.String?, functionName aFunctionName: Swift.StaticString = #function, fileName aFileName: Swift.StaticString = #file, lineNumber aLineNumber: Swift.Int = #line)
+}
+@_hasMissingDesignatedInitializers public class ErrorMessageCenter : RxSwift.ReactiveCompatible {
+  public static let shared: XMComm.ErrorMessageCenter
+  public func add(errorMessage aMessage: XMComm.ErrorMessage)
+  public func messages(forName aVcName: Swift.String? = nil, popFromSource aShouldPop: Swift.Bool = true) -> [XMComm.ErrorMessage]
+  public var errorMessage: RxSwift.PublishSubject<Swift.String>
+  public typealias ReactiveBase = XMComm.ErrorMessageCenter
+  @objc deinit
+}
+extension XMComm.BatteryStateCategorySimplified : XMComm.CommValueType {
+  public var cacheRepresentation: Swift.String? {
+    get
+  }
+  public init?(cacheRepresentation aCacheRepresentation: Swift.String?)
+  public init?(serverValue aServerValue: Swift.String)
+  public init?(boxValue aBoxValue: [XMComm.UartByte], precision aPrecision: Swift.Int?, rawValueType aType: XMComm.BoxRawValueType)
+}
+extension XMComm.Doors : XMComm.CommValueType {
+  public var cacheRepresentation: Swift.String? {
+    get
+  }
+  public init?(cacheRepresentation aCacheRepresentation: Swift.String?)
+  public init?(serverValue aServerValue: Swift.String)
+  public init?(boxValue aBoxValue: [XMComm.UartByte], precision aPrecision: Swift.Int?, rawValueType aType: XMComm.BoxRawValueType)
+}
+extension XMComm.Windows : XMComm.CommValueType {
+  public var cacheRepresentation: Swift.String? {
+    get
+  }
+  public init?(cacheRepresentation aCacheRepresentation: Swift.String?)
+  public init?(serverValue aServerValue: Swift.String)
+  public init?(boxValue aBoxValue: [XMComm.UartByte], precision aPrecision: Swift.Int?, rawValueType aType: XMComm.BoxRawValueType)
+}
+public enum LocationIdentifiers : Swift.String {
+  case infoLastLocation
+  case infoPrevLocation
+  case infoLastLocationEventTime
+  case infoMaximumRegionSize
+  case infoAuthorization
+  case allowsBackgroundLocationUpdates
+  case startMonitoringVisits
+  case startUpdatingLocation
+  case distanceFilter
+  case locationRadius
+  case regionNotifications
+  case actionDisableUpdatingBackground
+  case regions
+  case regionShowMap
+  case regionAddCurrent
+  case regionDeleteAll
+  case restartLocationService
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+extension XMComm.Lights : XMComm.CommValueType {
+  public var cacheRepresentation: Swift.String? {
+    get
+  }
+  public init?(cacheRepresentation aCacheRepresentation: Swift.String?)
+  public init?(serverValue aServerValue: Swift.String)
+  public init?(boxValue aBoxValue: [XMComm.UartByte], precision aPrecision: Swift.Int?, rawValueType aType: XMComm.BoxRawValueType)
+}
+extension XMComm.CarMode : XMComm.CommValueType {
+  public var cacheRepresentation: Swift.String? {
+    get
+  }
+  public init?(cacheRepresentation aCacheRepresentation: Swift.String?)
+  public init?(serverValue aServerValue: Swift.String)
+  public init?(boxValue aBoxValue: [XMComm.UartByte], precision aPrecision: Swift.Int?, rawValueType aType: XMComm.BoxRawValueType)
+}
+extension UIKit.UILabel {
+  @_Concurrency.MainActor(unsafe) convenience public init(text: Swift.String)
+}
+extension CoreLocation.CLLocation {
+  public class func distance(from: CoreLocation.CLLocationCoordinate2D, to: CoreLocation.CLLocationCoordinate2D) -> CoreLocation.CLLocationDistance
+}
+extension CoreLocation.CLLocationCoordinate2D {
+  public var descriptionWithLimitedPrecision: Swift.String {
+    get
+  }
+}
+extension MapKit.MKMapView {
+  @_Concurrency.MainActor(unsafe) public func zoomToUserLocation()
+}
+extension XMComm.RidePermission : XMComm.CommValueType {
+  public var cacheRepresentation: Swift.String? {
+    get
+  }
+  public init?(cacheRepresentation aCacheRepresentation: Swift.String?)
+  public init?(serverValue aServerValue: Swift.String)
+  public init?(boxValue aBoxValue: [XMComm.UartByte], precision aPrecision: Swift.Int?, rawValueType aType: XMComm.BoxRawValueType)
+}
+public enum CommandExecutionState : RxSwift.ReactiveCompatible {
+  case notExecuting, executing
+  public static var defaultTimeout: Swift.Double
+  public static var gsmDelay: Swift.Double
+  public static var defaultNotificationDuration: Swift.Double
+  public static var btService: XMComm.BluetoothService
+  public static var timeoutScheduler: RxSwift.SchedulerType
+  public static var current: XMComm.CommandExecutionState {
+    get
+  }
+  public static func startCommandExecution(delay aDelay: Foundation.TimeInterval = CommandExecutionState.defaultTimeout) -> Swift.Bool
+  public static func == (a: XMComm.CommandExecutionState, b: XMComm.CommandExecutionState) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public typealias ReactiveBase = XMComm.CommandExecutionState
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+extension RxSwift.Reactive where Base == XMComm.CommandExecutionState {
+  public static var currentState: RxSwift.Observable<XMComm.CommandExecutionState> {
+    get
+  }
+  public static var performingCommand: RxSwift.Observable<Swift.Bool> {
+    get
+  }
+}
+extension XMComm.BatteryStateDetail : XMComm.CommValueType {
+  public var cacheRepresentation: Swift.String? {
+    get
+  }
+  public init?(cacheRepresentation aCacheRepresentation: Swift.String?)
+  public init?(serverValue aServerValue: Swift.String)
+  public init?(boxValue aBoxValue: [XMComm.UartByte], precision aPrecision: Swift.Int?, rawValueType aType: XMComm.BoxRawValueType)
+  public static func getBatteryStateDetail(volts aVolts: Swift.Double) -> XMComm.BatteryStateDetail
+}
+public enum BatteryStateStatus : Swift.UInt {
+  case steady, afterCharging, charging, discharging, disconnected
+  public init?(rawValue: Swift.UInt)
+  public typealias RawValue = Swift.UInt
+  public var rawValue: Swift.UInt {
+    get
+  }
+}
+extension XMComm.BatteryStateStatus : XMComm.CommValueType {
+  public var cacheRepresentation: Swift.String? {
+    get
+  }
+  public init?(serverValue aServerValue: Swift.String)
+  public init?(boxValue aBoxValue: [XMComm.UartByte], precision aPrecision: Swift.Int?, rawValueType aType: XMComm.BoxRawValueType)
+  public init?(cacheRepresentation aCacheRepresentation: Swift.String?)
+}
+extension XMComm.BtConnectionState : Swift.Equatable {}
+extension XMComm.BtConnectionState : Swift.Hashable {}
+extension XMComm.CarMode : Swift.Equatable {}
+extension XMComm.CarMode : Swift.Hashable {}
+extension XMComm.CarMode : Swift.RawRepresentable {}
+extension XMComm.XMLoginError : Swift.Equatable {}
+extension XMComm.XMLoginError : Swift.Hashable {}
+extension XMComm.XMSerializationError : Swift.Equatable {}
+extension XMComm.XMSerializationError : Swift.Hashable {}
+extension XMComm.XMRestError : Swift.Equatable {}
+extension XMComm.XMRestError : Swift.Hashable {}
+extension Alamofire.DataRequest.LogOption : Swift.Equatable {}
+extension Alamofire.DataRequest.LogOption : Swift.Hashable {}
+extension XMComm.ValueRequestType : Swift.Equatable {}
+extension XMComm.ValueRequestType : Swift.Hashable {}
+extension XMComm.CarBoxStatus : Swift.Equatable {}
+extension XMComm.CarBoxStatus : Swift.Hashable {}
+extension XMComm.CarBoxStatus : Swift.RawRepresentable {}
+extension XMComm.OSType : Swift.Equatable {}
+extension XMComm.OSType : Swift.Hashable {}
+extension XMComm.OSType : Swift.RawRepresentable {}
+extension XMComm.PrivateLevel : Swift.Equatable {}
+extension XMComm.PrivateLevel : Swift.Hashable {}
+extension XMComm.PrivateLevel : Swift.RawRepresentable {}
+extension XMComm.BatteryStateDetail : Swift.Equatable {}
+extension XMComm.BatteryStateDetail : Swift.Hashable {}
+extension XMComm.BatteryStateDetail : Swift.RawRepresentable {}
+extension XMComm.BatteryStateCategory : Swift.Equatable {}
+extension XMComm.BatteryStateCategory : Swift.Hashable {}
+extension XMComm.BatteryStateCategory : Swift.RawRepresentable {}
+extension XMComm.BatteryStateCategorySimplified : Swift.Equatable {}
+extension XMComm.BatteryStateCategorySimplified : Swift.Hashable {}
+extension XMComm.BatteryStateCategorySimplified : Swift.RawRepresentable {}
+extension XMComm.CarCommandId : Swift.Equatable {}
+extension XMComm.CarCommandId : Swift.Hashable {}
+extension XMComm.CarCommandId : Swift.RawRepresentable {}
+extension XMComm.CarInfoValueId : Swift.Equatable {}
+extension XMComm.CarInfoValueId : Swift.Hashable {}
+extension XMComm.CarInfoValueId : Swift.RawRepresentable {}
+extension XMComm.BoxRawValueType : Swift.Equatable {}
+extension XMComm.BoxRawValueType : Swift.Hashable {}
+extension XMComm.ValueSupportedSource : Swift.Equatable {}
+extension XMComm.ValueSupportedSource : Swift.Hashable {}
+extension XMComm.CarInfoValueSource : Swift.Equatable {}
+extension XMComm.CarInfoValueSource : Swift.Hashable {}
+extension XMComm.DoorWindowState : Swift.Equatable {}
+extension XMComm.DoorWindowState : Swift.Hashable {}
+extension XMComm.LightState : Swift.Equatable {}
+extension XMComm.LightState : Swift.Hashable {}
+extension XMComm.TypeOfDrive : Swift.Equatable {}
+extension XMComm.TypeOfDrive : Swift.Hashable {}
+extension XMComm.TypeOfDrive : Swift.RawRepresentable {}
+extension XMComm.CarInfoErrorType : Swift.Equatable {}
+extension XMComm.CarInfoErrorType : Swift.Hashable {}
+extension XMComm.XMBluetoothError : Swift.Equatable {}
+extension XMComm.XMBluetoothError : Swift.Hashable {}
+extension XMComm.ErrorMessagePresentation : Swift.Equatable {}
+extension XMComm.ErrorMessagePresentation : Swift.Hashable {}
+extension XMComm.PukRequestError : Swift.Equatable {}
+extension XMComm.PukRequestError : Swift.Hashable {}
+extension XMComm.SecurityLockPreferences : Swift.Hashable {}
+extension XMComm.SecurityLockPreferences : Swift.RawRepresentable {}
+extension XMComm.LockOperation : Swift.Equatable {}
+extension XMComm.LockOperation : Swift.Hashable {}
+extension XMComm.LockOperation : Swift.RawRepresentable {}
+extension XMComm.LockStateInfo : Swift.Hashable {}
+extension XMComm.LockStateInfo : Swift.RawRepresentable {}
+extension XMComm.XMUrlEncoding.Destination : Swift.Equatable {}
+extension XMComm.XMUrlEncoding.Destination : Swift.Hashable {}
+extension XMComm.CarCharacteristicId : Swift.Equatable {}
+extension XMComm.CarCharacteristicId : Swift.Hashable {}
+extension XMComm.CarCharacteristicId : Swift.RawRepresentable {}
+@available(*, unavailable, renamed: "Connection")
+extension XMComm.Reachability.NetworkStatus : Swift.Equatable {}
+@available(*, unavailable, renamed: "Connection")
+extension XMComm.Reachability.NetworkStatus : Swift.Hashable {}
+extension XMComm.Reachability.Connection : Swift.Equatable {}
+extension XMComm.Reachability.Connection : Swift.Hashable {}
+extension XMComm.RestResponseCode : Swift.Equatable {}
+extension XMComm.RestResponseCode : Swift.Hashable {}
+extension XMComm.RestResponseCode : Swift.RawRepresentable {}
+extension XMComm.ValueState : Swift.Equatable {}
+extension XMComm.ValueState : Swift.Hashable {}
+extension XMComm.ValueSource : Swift.Equatable {}
+extension XMComm.ValueSource : Swift.Hashable {}
+extension XMComm.ValueSource : Swift.RawRepresentable {}
+extension XMComm.RidePermission : Swift.Equatable {}
+extension XMComm.RidePermission : Swift.Hashable {}
+extension XMComm.RidePermission : Swift.RawRepresentable {}
+extension XMComm.XMLogLevel : Swift.Equatable {}
+extension XMComm.XMLogLevel : Swift.Hashable {}
+extension XMComm.XMLogLevel : Swift.RawRepresentable {}
+extension XMComm.LocationIdentifiers : Swift.Equatable {}
+extension XMComm.LocationIdentifiers : Swift.Hashable {}
+extension XMComm.LocationIdentifiers : Swift.RawRepresentable {}
+extension XMComm.CommandExecutionState : Swift.Equatable {}
+extension XMComm.CommandExecutionState : Swift.Hashable {}
+extension XMComm.BatteryStateStatus : Swift.Equatable {}
+extension XMComm.BatteryStateStatus : Swift.Hashable {}
+extension XMComm.BatteryStateStatus : Swift.RawRepresentable {}
