@@ -1,12 +1,10 @@
 // swift-interface-format-version: 1.0
 // swift-compiler-version: Apple Swift version 5.5.2 (swiftlang-1300.0.47.5 clang-1300.0.29.30)
 // swift-module-flags: -target x86_64-apple-ios13.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name XMComm
-import Alamofire
 import CocoaLumberjack
 import CoreBluetooth
 import CoreLocation
 import CryptoSwift
-import DeviceKit
 import Dispatch
 import Foundation
 import MapKit
@@ -15,7 +13,6 @@ import RxCocoa
 import RxSwift
 import Security
 import Swift
-import SwiftyJSON
 import SystemConfiguration
 import UIKit
 import UserNotifications
@@ -81,15 +78,6 @@ public struct MonthHelpers {
 extension Swift.Bool : XMComm.XMCommActionValueType {
   public func unsignedIntValue() -> XMComm.UartByte
 }
-public class XMActionResultItem {
-  public var code: Swift.Int?
-  public var message: Swift.String?
-  public var id: Swift.Int?
-  public var idText: Swift.String?
-  public var fields: Swift.AnyObject?
-  public init?(json: SwiftyJSON.JSON)
-  @objc deinit
-}
 public enum CarMode : Swift.UInt64 {
   case unknown, standard, maintenance, immobilized, emergency, autoLock
   public init?(rawValue: Swift.UInt64)
@@ -116,14 +104,6 @@ public struct XMInfo : Swift.Decodable {
   public var name: Swift.String?
   public var version: Swift.String?
   public init(from decoder: Swift.Decoder) throws
-}
-public class XMAuthResponse {
-  public var code: Swift.Int?
-  public var message: Swift.String?
-  public var id: Swift.Int?
-  public var idText: Swift.String?
-  public init?(json: SwiftyJSON.JSON)
-  @objc deinit
 }
 public struct XMError {
 }
@@ -205,67 +185,6 @@ extension XMComm.XMRestError : Swift.CustomDebugStringConvertible {
     get
   }
 }
-extension XMComm.XMRestService {
-  public func getFuelList(_ carId: Swift.Int, dateFrom: Foundation.Date, dateTo: Foundation.Date) -> RxSwift.Observable<XMComm.FuelListVO>
-  public func getFuelDetail(_ fuelId: Swift.Int) -> RxSwift.Observable<XMComm.FuelDetailItemVO>
-  public func putFuelDetail(fuelId aFuelId: Swift.Int, fuelDetail aFuelDetail: XMComm.FuelDetailItemVO) -> RxSwift.Observable<Swift.Void>
-}
-extension Alamofire.DataRequest {
-  public enum LogOption {
-    case mute
-    case debug
-    case dump
-    public static func == (a: Alamofire.DataRequest.LogOption, b: Alamofire.DataRequest.LogOption) -> Swift.Bool
-    public func hash(into hasher: inout Swift.Hasher)
-    public var hashValue: Swift.Int {
-      get
-    }
-  }
-  public func log(option anOption: Alamofire.DataRequest.LogOption) -> Self
-  public func logRequest(option anOption: Alamofire.DataRequest.LogOption) -> Self
-  public func logResponse(option anOption: Alamofire.DataRequest.LogOption) -> Self
-}
-extension XMComm.XMRestService {
-  public func perform(onCar aCarId: Swift.Int?, action anActionId: XMComm.CarCommandId, value aValue: XMComm.XMCommActionValueType?, timeout aTimeout: Foundation.TimeInterval) -> RxSwift.Observable<XMComm.BoxValue<Swift.Int>>
-}
-extension XMComm.XMRestService {
-  public func getDriveList(_ carId: Swift.Int, dateFrom: Foundation.Date, dateTo: Foundation.Date, includeActual anIncludeActual: Swift.Bool = false) -> RxSwift.Observable<XMComm.DriveListVO>
-  public func getDriveDetail(_ driveId: Swift.Int) -> RxSwift.Observable<XMComm.DriveDetailVO>
-}
-extension XMComm.XMRestService {
-  public func loginWithUsername(withUsername anUsername: Swift.String, andPassword aPassword: Swift.String) -> RxSwift.Observable<XMComm.XMLoginResponse>
-  public func loginWithToken(_ aToken: Swift.String) -> RxSwift.Observable<XMComm.XMLoginResponse>
-  public func postLogout() -> RxSwift.Observable<XMComm.RestResponse>
-  public func putAuthNotification(notificationToken aToken: Swift.String) -> RxSwift.Observable<XMComm.RestResponse>
-  public func deleteAuthNotification() -> RxSwift.Observable<XMComm.RestResponse>
-  public func authorizeDevice() -> RxSwift.Observable<XMComm.RestResponse>
-}
-extension XMComm.XMRestService {
-  public func getCars() -> RxSwift.Observable<[XMComm.CarWithBoxType]>
-  public func getCarDetail(id aCarId: Swift.Int, requestedProperties aRequestedProperties: [XMComm.CarInfoValueId]) -> RxSwift.Observable<XMComm.XMCarDetail>
-  public func getCarCapabilities(_ aCarId: Swift.Int) -> RxSwift.Observable<XMComm.XMCarCapabilityItem>
-  public func getCarLocation(forCarId aCarId: Swift.Int) -> RxSwift.Observable<XMComm.DrivePointVO>
-}
-public struct NotForDemoUserError : Swift.Error {
-  public var localizedDescription: Swift.String {
-    get
-  }
-}
-extension XMComm.XMRestService {
-  public func postCommand(id aCarId: Swift.Int, action anActionId: XMComm.CommGeneralDefinitionType, value aValue: XMComm.XMCommActionValueType?) throws -> RxSwift.Observable<XMComm.XMGeneralResponse?>
-}
-public struct AnalyticsLogger {
-  public typealias RequestLog = (Foundation.URLRequest, Foundation.TimeInterval) -> Swift.Void
-  public static var logHandler: XMComm.AnalyticsLogger.RequestLog?
-}
-@_hasMissingDesignatedInitializers public class XMRestService : RxSwift.ReactiveCompatible {
-  public static let sharedInstance: XMComm.XMRestService
-  public var accessToken: Swift.String?
-  public var refreshToken: Swift.String?
-  public var deviceId: Swift.String?
-  public typealias ReactiveBase = XMComm.XMRestService
-  @objc deinit
-}
 extension Swift.String : XMComm.CommValueType {
   public init?(serverValue aServerValue: Swift.String)
   public init?(boxValue aBoxValue: [XMComm.UartByte], precision aPrecision: Swift.Int?, rawValueType aType: XMComm.BoxRawValueType)
@@ -277,7 +196,7 @@ public class DriverVO : XMComm.DriverType {
   public var externalHash: Swift.String
   public var name: Swift.String
   required public init()
-  public init(json aJson: SwiftyJSON.JSON)
+  public init(json aJson: XMComm.JSON)
   @objc deinit
 }
 public typealias UartByte = Swift.UInt8
@@ -346,7 +265,7 @@ open class XMBoxInfoItem : XMComm.CarBoxInfoType {
   open var installationDate: Foundation.Date?
   open var btBoxUUID: Swift.String?
   open var temporaryKeys: [Foundation.Data]
-  public init?(json aJSON: SwiftyJSON.JSON)
+  public init?(json aJSON: XMComm.JSON)
   public init(boxInfo aBoxInfo: XMComm.CarBoxInfoType)
   public init()
   @objc deinit
@@ -359,9 +278,6 @@ open class XMBoxInfoItem : XMComm.CarBoxInfoType {
   open var addressLines: XMComm.AddressLinesType? {
     get
     set
-  }
-  open var uriParameters: Alamofire.Parameters {
-    get
   }
   required public init()
   required public init?(serverValue aServerValue: Swift.String)
@@ -406,7 +322,7 @@ extension XMComm.CarBoxStatus : Swift.CustomDebugStringConvertible {
 public struct XMCarCapabilityItem : XMComm.CarCapabilityType {
   public var identifier: Swift.Int
   public var boxProperties: [XMComm.BoxPropertyType]
-  public init?(json aJson: SwiftyJSON.JSON)
+  public init?(json aJson: XMComm.JSON)
 }
 public struct XMBoxProperty : XMComm.BoxPropertyType {
   public var key: Swift.String
@@ -414,7 +330,7 @@ public struct XMBoxProperty : XMComm.BoxPropertyType {
   public var canBeChangedViaGsm: Swift.Bool
   public var accessibleViaBt: Swift.Bool
   public var canBeChangedViaBt: Swift.Bool
-  public init?(json aJson: SwiftyJSON.JSON)
+  public init?(json aJson: XMComm.JSON)
   public init(property aProperty: XMComm.BoxPropertyType)
 }
 extension Swift.Int {
@@ -452,10 +368,9 @@ open class XMCarItemDetail {
   open var capabilities: [XMComm.BoxPropertyType] {
     get
   }
-  public init?(json: SwiftyJSON.JSON)
+  public init?(json: XMComm.JSON)
   public init(car aCar: XMComm.CarType)
   public init()
-  open func toParameters() -> Alamofire.Parameters
   @objc deinit
 }
 extension XMComm.XMCarItemDetail : XMComm.CarWithBoxType {
@@ -483,7 +398,7 @@ open class XMCarStatusParameterItem {
   open var carParameterBooleanStatus: Swift.Bool?
   open var carParameterValue: Swift.Double?
   open var carParameterUpdateTime: Foundation.Date?
-  public init?(json: SwiftyJSON.JSON)
+  public init?(json: XMComm.JSON)
   @objc deinit
 }
 public enum OSType : Swift.String {
@@ -498,17 +413,14 @@ public enum OSType : Swift.String {
   }
 }
 public struct DeviceInformation {
-  public var device: DeviceKit.Device
+  public var device: XMComm.Device
   public var maker: Swift.String
   public var platform: XMComm.OSType
   public var appVersion: Swift.String
   public var model: Swift.String
   public var operatingSystemVersion: Swift.String
-  public var requestParameters: Alamofire.Parameters {
-    get
-  }
   public init()
-  public init(installId anInstallId: Swift.String, device aDevice: DeviceKit.Device? = nil, model aModel: Swift.String? = nil, operatingSystemVersion aSystemVersion: Swift.String? = nil)
+  public init(installId anInstallId: Swift.String, device aDevice: XMComm.Device? = nil, model aModel: Swift.String? = nil, operatingSystemVersion aSystemVersion: Swift.String? = nil)
 }
 @_inheritsConvenienceInitializers open class DriveDetailVO : XMComm.DriveVO, XMComm.DriveDetailType {
   open var distanceCost: Swift.Double
@@ -524,7 +436,7 @@ public struct DeviceInformation {
   open var canEdit: Swift.Bool
   open var userName: Swift.String
   required public init()
-  override public init?(json aJson: SwiftyJSON.JSON)
+  override public init?(json aJson: XMComm.JSON)
   @objc deinit
 }
 open class DriveVO : XMComm.DriveType {
@@ -549,19 +461,377 @@ open class DriveVO : XMComm.DriveType {
     set
   }
   required public init()
-  public init?(json aJson: SwiftyJSON.JSON)
+  public init?(json aJson: XMComm.JSON)
   @objc deinit
 }
 public struct DriveListVO {
   public var totalDistance: Swift.Double?
   public var drives: [XMComm.DriveVO]
   public var carId: Swift.Int?
-  public init(json aJson: SwiftyJSON.JSON)
-  public init(json aJson: SwiftyJSON.JSON, carId aCarId: Swift.Int)
+  public init(json aJson: XMComm.JSON)
+  public init(json aJson: XMComm.JSON, carId aCarId: Swift.Int)
+}
+public enum Device {
+  case iPodTouch5
+  case iPodTouch6
+  case iPodTouch7
+  case iPhone4
+  case iPhone4s
+  case iPhone5
+  case iPhone5c
+  case iPhone5s
+  case iPhone6
+  case iPhone6Plus
+  case iPhone6s
+  case iPhone6sPlus
+  case iPhone7
+  case iPhone7Plus
+  case iPhoneSE
+  case iPhone8
+  case iPhone8Plus
+  case iPhoneX
+  case iPhoneXS
+  case iPhoneXSMax
+  case iPhoneXR
+  case iPhone11
+  case iPhone11Pro
+  case iPhone11ProMax
+  case iPhoneSE2
+  case iPhone12
+  case iPhone12Mini
+  case iPhone12Pro
+  case iPhone12ProMax
+  case iPhone13
+  case iPhone13Mini
+  case iPhone13Pro
+  case iPhone13ProMax
+  case iPad2
+  case iPad3
+  case iPad4
+  case iPadAir
+  case iPadAir2
+  case iPad5
+  case iPad6
+  case iPadAir3
+  case iPad7
+  case iPad8
+  case iPad9
+  case iPadAir4
+  case iPadMini
+  case iPadMini2
+  case iPadMini3
+  case iPadMini4
+  case iPadMini5
+  case iPadMini6
+  case iPadPro9Inch
+  case iPadPro12Inch
+  case iPadPro12Inch2
+  case iPadPro10Inch
+  case iPadPro11Inch
+  case iPadPro12Inch3
+  case iPadPro11Inch2
+  case iPadPro12Inch4
+  case iPadPro11Inch3
+  case iPadPro12Inch5
+  case homePod
+  indirect case simulator(XMComm.Device)
+  case unknown(Swift.String)
+  public static var current: XMComm.Device {
+    get
+  }
+  public static var identifier: Swift.String
+  public static func mapToDevice(identifier: Swift.String) -> XMComm.Device
+  public static func realDevice(from device: XMComm.Device) -> XMComm.Device
+  public var diagonal: Swift.Double {
+    get
+  }
+  public var screenRatio: (width: Swift.Double, height: Swift.Double) {
+    get
+  }
+  public static var allPods: [XMComm.Device] {
+    get
+  }
+  public static var allPhones: [XMComm.Device] {
+    get
+  }
+  public static var allPads: [XMComm.Device] {
+    get
+  }
+  @available(*, deprecated, renamed: "allDevicesWithSensorHousing")
+  public static var allXSeriesDevices: [XMComm.Device] {
+    get
+  }
+  public static var allPlusSizedDevices: [XMComm.Device] {
+    get
+  }
+  public static var allProDevices: [XMComm.Device] {
+    get
+  }
+  public static var allMiniDevices: [XMComm.Device] {
+    get
+  }
+  public static var allSimulatorPods: [XMComm.Device] {
+    get
+  }
+  public static var allSimulatorPhones: [XMComm.Device] {
+    get
+  }
+  public static var allSimulatorPads: [XMComm.Device] {
+    get
+  }
+  public static var allSimulatorMiniDevices: [XMComm.Device] {
+    get
+  }
+  @available(*, deprecated, renamed: "allSimulatorDevicesWithSensorHousing")
+  public static var allSimulatorXSeriesDevices: [XMComm.Device] {
+    get
+  }
+  public static var allSimulatorPlusSizedDevices: [XMComm.Device] {
+    get
+  }
+  public static var allSimulatorProDevices: [XMComm.Device] {
+    get
+  }
+  public var isPod: Swift.Bool {
+    get
+  }
+  public var isPhone: Swift.Bool {
+    get
+  }
+  public var isPad: Swift.Bool {
+    get
+  }
+  public var isSimulator: Swift.Bool {
+    get
+  }
+  public var realDevice: XMComm.Device {
+    get
+  }
+  public var isZoomed: Swift.Bool? {
+    get
+  }
+  public static var allTouchIDCapableDevices: [XMComm.Device] {
+    get
+  }
+  public static var allFaceIDCapableDevices: [XMComm.Device] {
+    get
+  }
+  public static var allBiometricAuthenticationCapableDevices: [XMComm.Device] {
+    get
+  }
+  public var isTouchIDCapable: Swift.Bool {
+    get
+  }
+  public var isFaceIDCapable: Swift.Bool {
+    get
+  }
+  public var hasBiometricSensor: Swift.Bool {
+    get
+  }
+  public static var allDevicesWithSensorHousing: [XMComm.Device] {
+    get
+  }
+  public static var allSimulatorDevicesWithSensorHousing: [XMComm.Device] {
+    get
+  }
+  public var hasSensorHousing: Swift.Bool {
+    get
+  }
+  public static var allDevicesWithRoundedDisplayCorners: [XMComm.Device] {
+    get
+  }
+  public var hasRoundedDisplayCorners: Swift.Bool {
+    get
+  }
+  public static var allDevicesWith3dTouchSupport: [XMComm.Device] {
+    get
+  }
+  public var has3dTouchSupport: Swift.Bool {
+    get
+  }
+  public static var allDevicesWithWirelessChargingSupport: [XMComm.Device] {
+    get
+  }
+  public var supportsWirelessCharging: Swift.Bool {
+    get
+  }
+  public static var allDevicesWithALidarSensor: [XMComm.Device] {
+    get
+  }
+  public var hasLidarSensor: Swift.Bool {
+    get
+  }
+  public static var allRealDevices: [XMComm.Device] {
+    get
+  }
+  public static var allSimulators: [XMComm.Device] {
+    get
+  }
+  public func isOneOf(_ devices: [XMComm.Device]) -> Swift.Bool
+  public var name: Swift.String? {
+    get
+  }
+  public var systemName: Swift.String? {
+    get
+  }
+  public var systemVersion: Swift.String? {
+    get
+  }
+  public var model: Swift.String? {
+    get
+  }
+  public var localizedModel: Swift.String? {
+    get
+  }
+  public var ppi: Swift.Int? {
+    get
+  }
+  public var isGuidedAccessSessionActive: Swift.Bool {
+    get
+  }
+  public var screenBrightness: Swift.Int {
+    get
+  }
+}
+extension XMComm.Device : Swift.CustomStringConvertible {
+  public var description: Swift.String {
+    get
+  }
+  public var safeDescription: Swift.String {
+    get
+  }
+}
+extension XMComm.Device : Swift.Equatable {
+  public static func == (lhs: XMComm.Device, rhs: XMComm.Device) -> Swift.Bool
+}
+@available(iOS 8.0, watchOS 4.0, *)
+extension XMComm.Device {
+  public enum BatteryState : Swift.CustomStringConvertible, Swift.Equatable {
+    case full
+    case charging(Swift.Int)
+    case unplugged(Swift.Int)
+    public var lowPowerMode: Swift.Bool {
+      get
+    }
+    public var description: Swift.String {
+      get
+    }
+  }
+  public var batteryState: XMComm.Device.BatteryState? {
+    get
+  }
+  public var batteryLevel: Swift.Int? {
+    get
+  }
+}
+@available(iOS 8.0, watchOS 4.0, *)
+extension XMComm.Device.BatteryState : Swift.Comparable {
+  public static func == (lhs: XMComm.Device.BatteryState, rhs: XMComm.Device.BatteryState) -> Swift.Bool
+  public static func < (lhs: XMComm.Device.BatteryState, rhs: XMComm.Device.BatteryState) -> Swift.Bool
+}
+extension XMComm.Device {
+  public enum Orientation {
+    case landscape
+    case portrait
+    public static func == (a: XMComm.Device.Orientation, b: XMComm.Device.Orientation) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  public var orientation: XMComm.Device.Orientation {
+    get
+  }
+}
+extension XMComm.Device {
+  public static var volumeTotalCapacity: Swift.Int? {
+    get
+  }
+  public static var volumeAvailableCapacity: Swift.Int? {
+    get
+  }
+  @available(iOS 11.0, *)
+  public static var volumeAvailableCapacityForImportantUsage: Swift.Int64? {
+    get
+  }
+  @available(iOS 11.0, *)
+  public static var volumeAvailableCapacityForOpportunisticUsage: Swift.Int64? {
+    get
+  }
+  @available(iOS 11.0, *)
+  public static var volumes: [Foundation.URLResourceKey : Swift.Int64]? {
+    get
+  }
+}
+extension XMComm.Device {
+  public struct ApplePencilSupport : Swift.OptionSet {
+    public var rawValue: Swift.UInt
+    public init(rawValue: Swift.UInt)
+    public static let firstGeneration: XMComm.Device.ApplePencilSupport
+    public static let secondGeneration: XMComm.Device.ApplePencilSupport
+    public typealias ArrayLiteralElement = XMComm.Device.ApplePencilSupport
+    public typealias Element = XMComm.Device.ApplePencilSupport
+    public typealias RawValue = Swift.UInt
+  }
+  public static var allApplePencilCapableDevices: [XMComm.Device] {
+    get
+  }
+  public var applePencilSupport: XMComm.Device.ApplePencilSupport {
+    get
+  }
+}
+extension XMComm.Device {
+  public enum CameraType {
+    @available(*, deprecated, renamed: "wide")
+    case normal
+    case wide
+    case telephoto
+    case ultraWide
+    public static func == (a: XMComm.Device.CameraType, b: XMComm.Device.CameraType) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  public var cameras: [XMComm.Device.CameraType] {
+    get
+  }
+  public static var allDevicesWithCamera: [XMComm.Device] {
+    get
+  }
+  @available(*, deprecated, renamed: "allDevicesWithWideCamera")
+  public static var allDevicesWithNormalCamera: [XMComm.Device] {
+    get
+  }
+  public static var allDevicesWithWideCamera: [XMComm.Device] {
+    get
+  }
+  public static var allDevicesWithTelephotoCamera: [XMComm.Device] {
+    get
+  }
+  public static var allDevicesWithUltraWideCamera: [XMComm.Device] {
+    get
+  }
+  public var hasCamera: Swift.Bool {
+    get
+  }
+  @available(*, deprecated, renamed: "hasWideCamera")
+  public var hasNormalCamera: Swift.Bool {
+    get
+  }
+  public var hasWideCamera: Swift.Bool {
+    get
+  }
+  public var hasTelephotoCamera: Swift.Bool {
+    get
+  }
+  public var hasUltraWideCamera: Swift.Bool {
+    get
+  }
 }
 public struct FuelListVO {
   public var fuels: [XMComm.FuelType]
-  public init(json aJson: SwiftyJSON.JSON)
+  public init(json aJson: XMComm.JSON)
 }
 public struct FuelDetailItemVO : XMComm.FuelDetailType {
   public var carId: Swift.Int
@@ -576,15 +846,12 @@ public struct FuelDetailItemVO : XMComm.FuelDetailType {
   public var location: CoreLocation.CLLocationCoordinate2D?
   public var unitPrice: Swift.Double?
   public var currencyCode: Swift.String
-  public var uriParameters: Alamofire.Parameters {
-    get
-  }
   public var addressDetail: XMComm.AddressLinesType? {
     get
     set
   }
   public init()
-  public init?(json aJson: SwiftyJSON.JSON)
+  public init?(json aJson: XMComm.JSON)
 }
 public struct FuelItemVO : XMComm.FuelType {
   public var carId: Swift.Int
@@ -598,8 +865,8 @@ public struct FuelItemVO : XMComm.FuelType {
     get
     set
   }
-  public init?(json aJson: SwiftyJSON.JSON)
-  public init?(json aJson: SwiftyJSON.JSON, carId aCarId: Swift.Int)
+  public init?(json aJson: XMComm.JSON)
+  public init?(json aJson: XMComm.JSON, carId aCarId: Swift.Int)
   public init()
 }
 public struct FuelStorageVO {
@@ -641,7 +908,7 @@ public struct FuelStorageTypeVO {
 open class XMCarTempKeyResponse {
   open var idCar: Swift.Int?
   open var temporaryKey: Swift.String?
-  public init?(json: SwiftyJSON.JSON)
+  public init?(json: XMComm.JSON)
   @objc deinit
 }
 public enum PrivateLevel : Swift.UInt {
@@ -715,7 +982,7 @@ extension Swift.String {
 }
 open class XMCarSubscribeResponse {
   open var expiration: Swift.Int?
-  public init?(json: SwiftyJSON.JSON)
+  public init?(json: XMComm.JSON)
   @objc deinit
 }
 @_hasMissingDesignatedInitializers public class RestResponse {
@@ -728,7 +995,7 @@ open class XMCarSubscribeResponse {
 }
 open class XMNotifRegistrationResponse {
   open var notificationID: Swift.String
-  public init?(json: SwiftyJSON.JSON)
+  public init?(json: XMComm.JSON)
   @objc deinit
 }
 public struct XMLoginResponse {
@@ -1293,7 +1560,6 @@ extension XMComm.FuelDetailType {
   open var notificationPermissionAsked: RxSwift.Observable<Swift.Bool>?
   open var defaultTimeout: Foundation.TimeInterval
   @objc deinit
-  public func printApiVersion()
   @available(iOS 13.0, *)
   public func bluetoothPermissionStatus() -> RxBluetoothKit2.BluetoothState
   public func startBTService()
@@ -1408,7 +1674,7 @@ extension RxBluetoothKit2.Peripheral : Swift.Hashable {
 open class XMCarProfile {
   open var carId: Swift.Int?
   open var authorizedUsers: [Swift.String]?
-  public init?(json: SwiftyJSON.JSON)
+  public init?(json: XMComm.JSON)
   @objc deinit
 }
 extension RxSwift.ObservableType {
@@ -1624,33 +1890,6 @@ extension XMComm.LockStateInfo : Swift.CustomStringConvertible {
     get
   }
 }
-public struct XMUrlEncoding : Alamofire.ParameterEncoding {
-  public enum Destination {
-    case methodDependent, queryString, httpBody
-    public static func == (a: XMComm.XMUrlEncoding.Destination, b: XMComm.XMUrlEncoding.Destination) -> Swift.Bool
-    public func hash(into hasher: inout Swift.Hasher)
-    public var hashValue: Swift.Int {
-      get
-    }
-  }
-  public static var `default`: XMComm.XMUrlEncoding {
-    get
-  }
-  public static var methodDependent: XMComm.XMUrlEncoding {
-    get
-  }
-  public static var queryString: XMComm.XMUrlEncoding {
-    get
-  }
-  public static var httpBody: XMComm.XMUrlEncoding {
-    get
-  }
-  public let destination: XMComm.XMUrlEncoding.Destination
-  public init(destination: XMComm.XMUrlEncoding.Destination = .methodDependent)
-  public func encode(_ urlRequest: Alamofire.URLRequestConvertible, with parameters: Alamofire.Parameters?) throws -> Foundation.URLRequest
-  public func queryComponents(fromKey key: Swift.String, value: Any) -> [(Swift.String, Swift.String)]
-  public func escape(_ string: Swift.String) -> Swift.String
-}
 public protocol Cacheable {
   var cacheRepresentation: Swift.String? { get }
   init?(cacheRepresentation aCacheRepresentation: Swift.String?)
@@ -1815,6 +2054,355 @@ extension XMComm.AddressLinesType {
 @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers open class FuelCostsVO : XMComm.RoadTypeRelatedValuesVO {
   @objc deinit
 }
+public enum SwiftyJSONError : Swift.Int, Swift.Error {
+  case unsupportedType
+  case indexOutOfBounds
+  case elementTooDeep
+  case wrongType
+  case notExist
+  case invalidJSON
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+extension XMComm.SwiftyJSONError : Foundation.CustomNSError {
+  public static var errorDomain: Swift.String {
+    get
+  }
+  public var errorCode: Swift.Int {
+    get
+  }
+  public var errorUserInfo: [Swift.String : Any] {
+    get
+  }
+}
+public enum Type : Swift.Int {
+  case number
+  case string
+  case bool
+  case array
+  case dictionary
+  case null
+  case unknown
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public struct JSON {
+  public init(data: Foundation.Data, options opt: Foundation.JSONSerialization.ReadingOptions = []) throws
+  public init(_ object: Any)
+  public init(parseJSON jsonString: Swift.String)
+  public mutating func merge(with other: XMComm.JSON) throws
+  public func merged(with other: XMComm.JSON) throws -> XMComm.JSON
+  public var type: XMComm.`Type` {
+    get
+  }
+  public var error: XMComm.SwiftyJSONError? {
+    get
+  }
+  public var object: Any {
+    get
+    set
+  }
+  @available(*, unavailable, renamed: "null")
+  public static var nullJSON: XMComm.JSON {
+    get
+  }
+  public static var null: XMComm.JSON {
+    get
+  }
+}
+public enum Index<T> : Swift.Comparable {
+  case array(Swift.Int)
+  case dictionary(Swift.DictionaryIndex<Swift.String, T>)
+  case null
+  public static func == (lhs: XMComm.Index<T>, rhs: XMComm.Index<T>) -> Swift.Bool
+  public static func < (lhs: XMComm.Index<T>, rhs: XMComm.Index<T>) -> Swift.Bool
+}
+public typealias JSONIndex = XMComm.Index<XMComm.JSON>
+public typealias JSONRawIndex = XMComm.Index<Any>
+extension XMComm.JSON : Swift.Collection {
+  public typealias Index = XMComm.JSONRawIndex
+  public var startIndex: XMComm.JSON.Index {
+    get
+  }
+  public var endIndex: XMComm.JSON.Index {
+    get
+  }
+  public func index(after i: XMComm.JSON.Index) -> XMComm.JSON.Index
+  public subscript(position: XMComm.JSON.Index) -> (Swift.String, XMComm.JSON) {
+    get
+  }
+  public typealias Element = (Swift.String, XMComm.JSON)
+  public typealias Indices = Swift.DefaultIndices<XMComm.JSON>
+  public typealias Iterator = Swift.IndexingIterator<XMComm.JSON>
+  public typealias SubSequence = Swift.Slice<XMComm.JSON>
+}
+public enum JSONKey {
+  case index(Swift.Int)
+  case key(Swift.String)
+}
+public protocol JSONSubscriptType {
+  var jsonKey: XMComm.JSONKey { get }
+}
+extension Swift.Int : XMComm.JSONSubscriptType {
+  public var jsonKey: XMComm.JSONKey {
+    get
+  }
+}
+extension Swift.String : XMComm.JSONSubscriptType {
+  public var jsonKey: XMComm.JSONKey {
+    get
+  }
+}
+extension XMComm.JSON {
+  public subscript(path: [XMComm.JSONSubscriptType]) -> XMComm.JSON {
+    get
+    set
+  }
+  public subscript(path: XMComm.JSONSubscriptType...) -> XMComm.JSON {
+    get
+    set
+  }
+}
+extension XMComm.JSON : Swift.ExpressibleByStringLiteral {
+  public init(stringLiteral value: Swift.StringLiteralType)
+  public init(extendedGraphemeClusterLiteral value: Swift.StringLiteralType)
+  public init(unicodeScalarLiteral value: Swift.StringLiteralType)
+  public typealias ExtendedGraphemeClusterLiteralType = Swift.StringLiteralType
+  public typealias StringLiteralType = Swift.StringLiteralType
+  public typealias UnicodeScalarLiteralType = Swift.StringLiteralType
+}
+extension XMComm.JSON : Swift.ExpressibleByIntegerLiteral {
+  public init(integerLiteral value: Swift.IntegerLiteralType)
+  public typealias IntegerLiteralType = Swift.IntegerLiteralType
+}
+extension XMComm.JSON : Swift.ExpressibleByBooleanLiteral {
+  public init(booleanLiteral value: Swift.BooleanLiteralType)
+  public typealias BooleanLiteralType = Swift.BooleanLiteralType
+}
+extension XMComm.JSON : Swift.ExpressibleByFloatLiteral {
+  public init(floatLiteral value: Swift.FloatLiteralType)
+  public typealias FloatLiteralType = Swift.FloatLiteralType
+}
+extension XMComm.JSON : Swift.ExpressibleByDictionaryLiteral {
+  public init(dictionaryLiteral elements: (Swift.String, Any)...)
+  public typealias Key = Swift.String
+  public typealias Value = Any
+}
+extension XMComm.JSON : Swift.ExpressibleByArrayLiteral {
+  public init(arrayLiteral elements: Any...)
+  public typealias ArrayLiteralElement = Any
+}
+extension XMComm.JSON : Swift.RawRepresentable {
+  public init?(rawValue: Any)
+  public var rawValue: Any {
+    get
+  }
+  public func rawData(options opt: Foundation.JSONSerialization.WritingOptions = JSONSerialization.WritingOptions(rawValue: 0)) throws -> Foundation.Data
+  public func rawString(_ encoding: Swift.String.Encoding = .utf8, options opt: Foundation.JSONSerialization.WritingOptions = .prettyPrinted) -> Swift.String?
+  public func rawString(_ options: [XMComm.writingOptionsKeys : Any]) -> Swift.String?
+  public typealias RawValue = Any
+}
+extension XMComm.JSON : Swift.CustomStringConvertible, Swift.CustomDebugStringConvertible {
+  public var description: Swift.String {
+    get
+  }
+  public var debugDescription: Swift.String {
+    get
+  }
+}
+extension XMComm.JSON {
+  public var array: [XMComm.JSON]? {
+    get
+  }
+  public var arrayValue: [XMComm.JSON] {
+    get
+  }
+  public var arrayObject: [Any]? {
+    get
+    set
+  }
+}
+extension XMComm.JSON {
+  public var dictionary: [Swift.String : XMComm.JSON]? {
+    get
+  }
+  public var dictionaryValue: [Swift.String : XMComm.JSON] {
+    get
+  }
+  public var dictionaryObject: [Swift.String : Any]? {
+    get
+    set
+  }
+}
+extension XMComm.JSON {
+  public var bool: Swift.Bool? {
+    get
+    set
+  }
+  public var boolValue: Swift.Bool {
+    get
+    set
+  }
+}
+extension XMComm.JSON {
+  public var string: Swift.String? {
+    get
+    set
+  }
+  public var stringValue: Swift.String {
+    get
+    set
+  }
+}
+extension XMComm.JSON {
+  public var number: Foundation.NSNumber? {
+    get
+    set
+  }
+  public var numberValue: Foundation.NSNumber {
+    get
+    set
+  }
+}
+extension XMComm.JSON {
+  public var null: Foundation.NSNull? {
+    get
+    set
+  }
+  public func exists() -> Swift.Bool
+}
+extension XMComm.JSON {
+  public var url: Foundation.URL? {
+    get
+    set
+  }
+}
+extension XMComm.JSON {
+  public var double: Swift.Double? {
+    get
+    set
+  }
+  public var doubleValue: Swift.Double {
+    get
+    set
+  }
+  public var float: Swift.Float? {
+    get
+    set
+  }
+  public var floatValue: Swift.Float {
+    get
+    set
+  }
+  public var int: Swift.Int? {
+    get
+    set
+  }
+  public var intValue: Swift.Int {
+    get
+    set
+  }
+  public var uInt: Swift.UInt? {
+    get
+    set
+  }
+  public var uIntValue: Swift.UInt {
+    get
+    set
+  }
+  public var int8: Swift.Int8? {
+    get
+    set
+  }
+  public var int8Value: Swift.Int8 {
+    get
+    set
+  }
+  public var uInt8: Swift.UInt8? {
+    get
+    set
+  }
+  public var uInt8Value: Swift.UInt8 {
+    get
+    set
+  }
+  public var int16: Swift.Int16? {
+    get
+    set
+  }
+  public var int16Value: Swift.Int16 {
+    get
+    set
+  }
+  public var uInt16: Swift.UInt16? {
+    get
+    set
+  }
+  public var uInt16Value: Swift.UInt16 {
+    get
+    set
+  }
+  public var int32: Swift.Int32? {
+    get
+    set
+  }
+  public var int32Value: Swift.Int32 {
+    get
+    set
+  }
+  public var uInt32: Swift.UInt32? {
+    get
+    set
+  }
+  public var uInt32Value: Swift.UInt32 {
+    get
+    set
+  }
+  public var int64: Swift.Int64? {
+    get
+    set
+  }
+  public var int64Value: Swift.Int64 {
+    get
+    set
+  }
+  public var uInt64: Swift.UInt64? {
+    get
+    set
+  }
+  public var uInt64Value: Swift.UInt64 {
+    get
+    set
+  }
+}
+extension XMComm.JSON : Swift.Comparable {
+}
+public func == (lhs: XMComm.JSON, rhs: XMComm.JSON) -> Swift.Bool
+public func <= (lhs: XMComm.JSON, rhs: XMComm.JSON) -> Swift.Bool
+public func >= (lhs: XMComm.JSON, rhs: XMComm.JSON) -> Swift.Bool
+public func > (lhs: XMComm.JSON, rhs: XMComm.JSON) -> Swift.Bool
+public func < (lhs: XMComm.JSON, rhs: XMComm.JSON) -> Swift.Bool
+public enum writingOptionsKeys {
+  case jsonSerialization
+  case castNilToNSNull
+  case maxObjextDepth
+  case encoding
+  public static func == (a: XMComm.writingOptionsKeys, b: XMComm.writingOptionsKeys) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+extension XMComm.JSON : Swift.Codable {
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
 public enum RestResponseCode : Swift.Int {
   case unknown
   case ok
@@ -1841,8 +2429,6 @@ public enum RestResponseCode : Swift.Int {
     get
   }
 }
-public func NetworkObservable<T>(for aRequestComposer: @escaping () -> Alamofire.DataRequest, errorWhenNoDataProvided aNoDataError: Swift.Bool = true, resultConverter aConverter: @escaping (Alamofire.DataResponse<Any>) throws -> T) -> RxSwift.Observable<T>
-public func RestAuthorizationHeaders(_ anAccessToken: Swift.String?) -> Alamofire.HTTPHeaders?
 public struct PINConfiguration : Swift.OptionSet {
   public var rawValue: Swift.Int
   public init(rawValue aRawValue: Swift.Int)
@@ -1864,9 +2450,6 @@ extension XMComm.PINConfiguration : Swift.CustomDebugStringConvertible {
 public struct VerificationCodeInfo {
   public var deviceInfo: XMComm.DeviceInformation
   public var code: Swift.String?
-  public var requestParameters: Alamofire.Parameters {
-    get
-  }
   public init()
   public init(device aDevice: XMComm.DeviceInformation, code aCode: Swift.String?)
   public init(installId anInstallId: Swift.String, code aCode: Swift.String?)
@@ -1940,9 +2523,9 @@ public class XMCarSubscriptionItem {
   public var dateTime: Swift.Int?
   public var requestTakeOver: Swift.Bool?
   required public init()
-  public init?(json aJson: SwiftyJSON.JSON)
+  public init?(json aJson: XMComm.JSON)
   public init?(fromNotification aNotification: [Swift.AnyHashable : Any])
-  public func processResponse(fromJson aJson: SwiftyJSON.JSON)
+  public func processResponse(fromJson aJson: XMComm.JSON)
   @objc deinit
 }
 @_hasMissingDesignatedInitializers public class CommCarService : RxSwift.ReactiveCompatible {
@@ -2226,8 +2809,6 @@ extension XMComm.XMSerializationError : Swift.Equatable {}
 extension XMComm.XMSerializationError : Swift.Hashable {}
 extension XMComm.XMRestError : Swift.Equatable {}
 extension XMComm.XMRestError : Swift.Hashable {}
-extension Alamofire.DataRequest.LogOption : Swift.Equatable {}
-extension Alamofire.DataRequest.LogOption : Swift.Hashable {}
 extension XMComm.ValueRequestType : Swift.Equatable {}
 extension XMComm.ValueRequestType : Swift.Hashable {}
 extension XMComm.CarBoxStatus : Swift.Equatable {}
@@ -2236,6 +2817,10 @@ extension XMComm.CarBoxStatus : Swift.RawRepresentable {}
 extension XMComm.OSType : Swift.Equatable {}
 extension XMComm.OSType : Swift.Hashable {}
 extension XMComm.OSType : Swift.RawRepresentable {}
+extension XMComm.Device.Orientation : Swift.Equatable {}
+extension XMComm.Device.Orientation : Swift.Hashable {}
+extension XMComm.Device.CameraType : Swift.Equatable {}
+extension XMComm.Device.CameraType : Swift.Hashable {}
 extension XMComm.PrivateLevel : Swift.Equatable {}
 extension XMComm.PrivateLevel : Swift.Hashable {}
 extension XMComm.PrivateLevel : Swift.RawRepresentable {}
@@ -2282,8 +2867,6 @@ extension XMComm.LockOperation : Swift.Hashable {}
 extension XMComm.LockOperation : Swift.RawRepresentable {}
 extension XMComm.LockStateInfo : Swift.Hashable {}
 extension XMComm.LockStateInfo : Swift.RawRepresentable {}
-extension XMComm.XMUrlEncoding.Destination : Swift.Equatable {}
-extension XMComm.XMUrlEncoding.Destination : Swift.Hashable {}
 extension XMComm.CarCharacteristicId : Swift.Equatable {}
 extension XMComm.CarCharacteristicId : Swift.Hashable {}
 extension XMComm.CarCharacteristicId : Swift.RawRepresentable {}
@@ -2293,6 +2876,14 @@ extension XMComm.Reachability.NetworkStatus : Swift.Equatable {}
 extension XMComm.Reachability.NetworkStatus : Swift.Hashable {}
 extension XMComm.Reachability.Connection : Swift.Equatable {}
 extension XMComm.Reachability.Connection : Swift.Hashable {}
+extension XMComm.SwiftyJSONError : Swift.Equatable {}
+extension XMComm.SwiftyJSONError : Swift.Hashable {}
+extension XMComm.SwiftyJSONError : Swift.RawRepresentable {}
+extension XMComm.`Type` : Swift.Equatable {}
+extension XMComm.`Type` : Swift.Hashable {}
+extension XMComm.`Type` : Swift.RawRepresentable {}
+extension XMComm.writingOptionsKeys : Swift.Equatable {}
+extension XMComm.writingOptionsKeys : Swift.Hashable {}
 extension XMComm.RestResponseCode : Swift.Equatable {}
 extension XMComm.RestResponseCode : Swift.Hashable {}
 extension XMComm.RestResponseCode : Swift.RawRepresentable {}
