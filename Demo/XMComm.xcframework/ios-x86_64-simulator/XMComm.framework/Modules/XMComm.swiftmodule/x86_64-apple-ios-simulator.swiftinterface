@@ -1606,7 +1606,7 @@ extension XMComm.XMLogBookType {
     get
     set(aNewCarToConnect)
   }
-  public func connect(publicId aPublicId: Swift.String, publicKey aPublicKey: Swift.String, temporaryKeys aTempKeys: [Foundation.Data] = [])
+  public func connect(publicId aPublicId: Swift.String, publicKey aPublicKey: Swift.String, temporaryKeys aTempKeys: [Swift.String] = [])
   public func disconnect()
   public var lastDateFromBox: Foundation.Date
   public var authorizedCars: [XMComm.CarWithBoxType]

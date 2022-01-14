@@ -66,13 +66,16 @@ class CarDetailVC: UIViewController {
   
   @IBAction func btConnectClick(_ sender: Any) {
     XMLog("BT Connect Click")
+    let ud = UserDefaults.standard
     
-    guard let thePubId = car?.boxInfo.publicId, let thePubKey = car?.boxInfo.publicKey else {
-      XMLog("Chybi publicID nebo publicKey --> nebudeme pripojovat pres BT")
+    guard let thePubId = car?.boxInfo.publicId,
+          let thePubKey = car?.boxInfo.publicKey,
+          let tempKey = ud.value(forKey: "mobileDeviceGuid") as? String else {
+      XMLog("Chybi publicID, publicKey nebo temporaryKey --> nebudeme pripojovat pres BT")
       return
     }
 
-    btService.connect(publicId: thePubId, publicKey: thePubKey)
+    btService.connect(publicId: thePubId, publicKey: thePubKey, temporaryKeys: [tempKey])
   }
   
   @IBAction func consoleClearClick(_ sender: Any) {
