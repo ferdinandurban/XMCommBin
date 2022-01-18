@@ -89,6 +89,7 @@ class CarDetailVC: UIViewController {
   
   override func viewWillDisappear(_ animated: Bool) {
     btService.disconnect()
+    btService.stopMonitoring()
   }
   
   override func viewDidLoad() {

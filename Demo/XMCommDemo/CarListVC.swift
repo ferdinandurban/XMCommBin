@@ -98,8 +98,7 @@ class CarListVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
       let car = cars[indexPath.row]
       vc.car = car
       
-      // Set currently selected car to communicate with
-//      commService.currentCar = car
+      tableView.deselectRow(at: indexPath, animated: true)
       
       if let navigator = navigationController {
         navigator.pushViewController(vc, animated: true)

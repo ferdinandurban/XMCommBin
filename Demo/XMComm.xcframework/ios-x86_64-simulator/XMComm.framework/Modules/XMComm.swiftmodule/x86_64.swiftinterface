@@ -1608,6 +1608,8 @@ extension XMComm.XMLogBookType {
   }
   public func connect(publicId aPublicId: Swift.String, publicKey aPublicKey: Swift.String, temporaryKeys aTempKeys: [Swift.String] = [])
   public func disconnect()
+  public func stopUpdatingBoxes()
+  public func stopScan()
   public var lastDateFromBox: Foundation.Date
   public var authorizedCars: [XMComm.CarWithBoxType]
   @available(iOS 13.0, *)
@@ -1624,6 +1626,7 @@ extension XMComm.XMLogBookType {
   @objc deinit
   public func centralManagerDidUpdateState(_ central: CoreBluetooth.CBCentralManager)
   public func startMonitoring()
+  public func stopMonitoring()
   public typealias ReactiveBase = XMComm.BluetoothService
 }
 extension RxSwift.Reactive where Base : UIKit.UIApplication {

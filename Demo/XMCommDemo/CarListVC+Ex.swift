@@ -44,8 +44,8 @@ extension CarListVC {
     } else {
       getDeviceId()
       #warning("Set the correct username & password")
-      let username = "ferdinand.urban@gmail.com"
-      let pass = "hekxit-basKom-wipvi7"
+      let username = ""
+      let pass = ""
       
       restService.loginUser(username: username,
                             password: pass){[weak self](result) in
